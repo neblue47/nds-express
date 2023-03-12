@@ -1,0 +1,151 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2"> 
+            <div class="col-sm-12">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Gestão</a></li>
+                    <li class="breadcrumb-item active">Produtos</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+    <!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <!-- Default box -->
+    <div class="container-fluid">
+        <div class="card" *ngIf="!prdSelected">
+            <div class="card-header">
+                <h3 class="card-title">LISTA DE PRODUTOS</h3>
+
+                <div class="card-tools">                   
+                    <button type="button" class="btn btn-sm btn-outline-success" data-widget="Novo" data-toggle="tooltip" title="Novo" (click)="appNovo()" >
+                        <i class="fa fa-plus-circle"></i> Novo
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <table class="table table-sm table-hover " >
+                    <thead>           
+                      <tr>
+                        <th scope="col" style="display: none;">#</th>
+                        <th scope="col">DESCRIÇÃO</th>
+                        <th scope="col" style="text-align: center;  ">QUANTIDADE</th>
+                        <th scope="col" style="text-align: center;  ">P. UNITARIO</th> 
+                        <th scope="col" style="text-align: center;  ">TAXA</th>
+                        <th scope="col" style="text-align: center;  ">P. TAXADO</th>
+                        <th scope="col" style="text-align: center;  ">ESTADO</th>  
+                        <th style="width: 20%; text-align:center;"><input class="form-control" type="text"  placeholder="Pesquisar..."   >  </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let appsch of returnedArray  ">
+                            <td scope="row" style="display: none;">{{appsch.id}}</td>
+                            <td >{{appsch.descricaoComercial}}</td>
+                            <td style="text-align: center;  ">{{appsch.quantidade}}</td> 
+                            <td style="text-align: center;  ">{{appsch.preco | currency}}</td>  
+                            <td style="text-align: center;  ">{{appsch.taxa}} %</td>   
+                            <td style="text-align: center;  ">{{appsch.preco_taxado | currency  }}</td>
+                            <td style="text-align: center;  ">{{appsch.statuStockDescription }}</td>
+                            <td style="text-align: right; width: 20%;">
+                                <div>                             
+                                    <button class=" btn btn-sm btn-outline-secondary ml-3 mr-2" style=" color: black;" (click)="EditaModel(appsch)"  ><i class="fa fa-edit" aria-hidden="true"></i> Editar</button>
+                                    <button class=" btn btn-sm btn-outline-danger s" style="color: black;"   (click)="excluirItemForm(templateDelete,appsch)"   ><i class="fa fa-trash" aria-hidden="true"></i> Excluir</button>    
+          
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                  </table> 
+                  <div class="row">
+                    <div class="col-xs-12 col-12 " *ngIf="totalItens > 10">
+                      <pagination [totalItems]="totalItens" [(ngModel)]="currentPage" (pageChanged)="pageChanged($event)" [itemsPerPage]="5"  previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;"></pagination>
+                    </div>
+                  </div>
+            </div>
+            <!-- /.card-body --> 
+        </div>
+        <!-- /.card Table -->
+
+        <div class="card" *ngIf="prdSelected">
+            <div class="card-header">
+                <h3 class="card-title">EDITOR DE PRODUTO</h3>             
+            </div>
+            <div class="card-body">
+                <form [formGroup]="appvmForm" (submit)="submitForm()"   >     
+                    <div class="form-group mb-2"> 
+                     <small id="descricaoComercial" class="form-text text-muted">Descrição Comercial. <span *ngIf="appvmForm.controls.descricaoComercial.errors" style="color: red; font-size: 12px;"> * </span></small>       
+                     <input type="text" formControlName="descricaoComercial"  class="form-control form-control-sm"  required  autocomplete="false" >
+                    </div>         
+                    <div class="form-group mb-2"> 
+                      <small id="descricaoTecnica" class="form-text text-muted">Descrição Técnica. </small>
+                      <input type="text" formControlName="descricaoTecnica"  class="form-control form-control-sm"  required  autocomplete="false"     >
+                    </div>
+                    <div class="form-group mb-2"> 
+                      <small id="quantidade" class="form-text text-muted" >Quantidade. <span *ngIf="appvmForm.controls.quantidade.errors" style="color: red; font-size: 12px;"> * </span></small>
+                      <input type="number" formControlName="quantidade"  class="form-control form-control-sm"  required autocomplete="false"    >       
+                    </div> 
+                    <div class="form-group mb-2"> 
+                        <small id="preco" class="form-text text-muted" >Preço. <span *ngIf="appvmForm.controls.preco.errors" style="color: red; font-size: 12px;"> * </span></small>
+                        <input type="text" formControlName="preco"  class="form-control form-control-sm"  required autocomplete="false"  [(ngModel)]="precoTemp"  >       
+                      </div>
+                    <div class="form-group mb-2">
+                      <small id="taxa" class="form-text text-muted">Taxa. <span *ngIf="appvmForm.controls.taxa.errors" style="color: red; font-size: 12px;"> * </span></small>
+                         
+                      <select formControlName="taxa"  class="form-control form-control-sm" id="taxa" (change)="setPrecoTaxado()" [(ngModel)]="taxaTemp"> 
+                        <option *ngFor="let isxTypes of isentoTypes" [value]="isxTypes.value">
+                          {{isxTypes.texto}}
+                        </option> 
+                      </select>  
+                    </div> 
+                    <div class="form-group mb-2"> 
+                        <small id="precoTaxado" class="form-text text-muted" >Preço Taxado. 
+                        <span *ngIf="appvmForm.controls.preco_taxado.errors" style="color: red; font-size: 12px;"> * </span>
+                        </small> 
+                        <input type="text" formControlName="preco_taxado"  class="form-control form-control-sm"  required autocomplete="false" [(ngModel)]="precotaxadoTemp" readonly  >       
+                      
+                      </div>
+                    <div class="form-group mb-2">
+                        <small id="statuStock" class="form-text text-muted">Estado. 
+                        <span *ngIf="appvmForm.controls.statuStock.errors" style="color: red; font-size: 12px;"> * </span>
+                      </small>  
+                        <select formControlName="statuStock"  class="form-control form-control-sm" id="statuStock" > 
+                          <option *ngFor="let esTypes of statesTypes" [value]="esTypes.value">
+                            {{esTypes.texto}}
+                          </option>
+                        </select>
+                        
+                      </div>
+                  
+                    <div class="modal-footer"> 
+                     <button  class="btn btn-primary" style="margin-right: 5px;" [disabled]="!appvmForm.valid">Salvar</button> 
+                     <button (click)="voltar()" class="btn btn-secondary">Fechar</button>
+                   </div>
+                  </form>
+            </div>
+        </div>
+        <!-- /.card  Editor-->
+    </div>
+    
+    <ng-template #templateDelete>
+        <div class="modal-header alert-danger">
+          <b class="modal-title pull-left ">Eliminando!</b>
+          <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+            <span aria-hidden="true" class="visually-hidden">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          Pretende excluir <b style="text-transform: uppercase;">{{itemOpcao}}</b> ?
+        </div> 
+        <div style="text-align: right;margin-bottom: 10px;" > 
+          <button class=" btn btn-sm btn-outline-danger ml-3 mr-1" style="color: black;"  (click)=" confirmEvent(itemOpcaoId)"  >Sim</button>                      
+          <button class=" btn btn-sm btn-outline-secondary ml-3 mr-1" style=" color: black; " (click)="modalRef?.hide()" >Não</button>
+        </div>    
+      </ng-template>
+</section>
+
+<!-- /.content -->
+

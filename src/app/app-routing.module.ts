@@ -12,6 +12,14 @@ import {ForgotPasswordComponent} from '@modules/forgot-password/forgot-password.
 import {RecoverPasswordComponent} from '@modules/recover-password/recover-password.component';
 import {MainMenuComponent} from '@pages/main-menu/main-menu.component';
 import {SubMenuComponent} from '@pages/main-menu/sub-menu/sub-menu.component';
+import { GestaoUtilizadorComponent } from './pages/gestao-utilizador/gestao-utilizador.component';
+import { GestaoClienteComponent } from './pages/gestao-cliente/gestao-cliente.component';
+import { GestaoProdutoComponent } from './pages/gestao-produto/gestao-produto.component';
+import { VendaDiriaComponent } from './pages/venda-diria/venda-diria.component';
+import { VendaComponent } from './pages/venda/venda.component';
+import { RelatorioVendaComponent } from './pages/relatorio-venda/relatorio-venda.component';
+import { RelatorioProdutoComponent } from './pages/relatorio-produto/relatorio-produto.component';
+import { InstituicaoComponent } from './pages/instituicao/instituicao.component';
 
 const routes: Routes = [
     {
@@ -25,16 +33,36 @@ const routes: Routes = [
                 component: ProfileComponent
             },
             {
-                path: 'blank',
-                component: BlankComponent
+                path: 'facturacao',
+                component: VendaComponent
             },
             {
-                path: 'sub-menu-1',
-                component: SubMenuComponent
+                path: 'facturacao-diria',
+                component: VendaDiriaComponent
             },
             {
-                path: 'sub-menu-2',
-                component: BlankComponent
+                path: 'clientes',
+                component: GestaoClienteComponent
+            },
+            {
+                path: 'produtos',
+                component: GestaoProdutoComponent
+            },
+            {
+                path: 'relatorio-vendas',
+                component: RelatorioVendaComponent
+            },
+            {
+                path: 'relatorio-produtos',
+                component: RelatorioProdutoComponent
+            },
+            {
+                path: 'utilizadores',
+                component: GestaoUtilizadorComponent
+            },
+            {
+                path: 'instituicao',
+                component: InstituicaoComponent
             },
             {
                 path: '',

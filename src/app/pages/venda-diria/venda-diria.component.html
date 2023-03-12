@@ -1,0 +1,154 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-12">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">XVendas</a></li>
+                    <li class="breadcrumb-item active">Diária</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+    <!-- /.container-fluid -->
+</section>
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+        <div class="card" >
+            <div class="card-header">
+                <h3 class="card-title">LISTA DE VENDAS DIÁRIAS</h3> 
+            </div>
+            <div class="card-body">
+                <table class="table table-sm table-hover " >
+                    <thead >           
+                      <tr>
+                        <th scope="col" style="display: none;">#</th>
+                        <th scope="col">Nº</th>
+                        <th scope="col">Cliente</th> 
+                        <th scope="col">Data e Hora</th>
+                        <th scope="col">Total Venda</th> 
+                        <th scope="col">Total Pago</th>
+                        <th scope="col">Em Divida</th>
+                        <th style="width: 15%; text-align:center;"><input class="form-control" type="text"  placeholder="Pesquisar..."   >  </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let appsch of returnedArray  "  >
+                            <td scope="row" style="display: none;">{{appsch.id}}</td>
+                            <td>{{appsch.numeroVenda}}</td>
+                            <td>{{appsch.nomeCliente}}</td> 
+                            <td>{{appsch.dataVendaString}}</td>  
+                            <td>{{appsch.totalVenda | currency}}</td> 
+                            <td>{{appsch.totalPago | currency}}</td>  
+                            <td >{{appsch.currentDivida | currency}}</td> 
+                        
+                            <td style="text-align: right; width: 15%;">
+                                <div> 
+                                    
+                                    <button class=" btn btn-sm btn-outline-primary   ml-1 mr-1" style=" color: black;" (click)="DetalhaItemForm(templateDetalhar,appsch)"   ><i class="fa fa-eye" aria-hidden="true"  ></i> </button> 
+                                    <button class=" btn btn-sm btn-outline-danger    ml-1 mr-1" style="color: black;"  (click)="AnularItemForm(templateAnular,appsch)" [disabled]="appsch.isAnulado === 1" [disabled]="appsch.formaPagamento !== 1"><i class="fa fa-times-circle" aria-hidden="true"  ></i> </button>    
+                                    <button class=" btn btn-sm btn-outline-secondary ml-1 mr-1" style="color: black;" (click)="printFacturaVenda(appsch.id)"  ><i class="fa fa-print" aria-hidden="true"></i> </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                  </table> 
+                  <div class="row">
+                    <div class="col-xs-12 col-12 " *ngIf="totalItens > 10">
+                      <pagination [totalItems]="totalItens" [(ngModel)]="currentPage" (pageChanged)="pageChanged($event)" [itemsPerPage]="5"  previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;"></pagination>
+                    </div>
+                  </div>
+            </div>
+        </div>
+    </div>
+</section>
+<ng-template #templateDetalhar>
+  <div class="container-fluid">
+      <div class="modal-header "> 
+          <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+            <span aria-hidden="true" class="visually-hidden">&times;</span>
+          </button>
+      </div>
+      <div class="card" >            
+          <div class="card-header ">
+              <b class="card-title pull-left "> {{itemDetalhe.numeroVenda}} :: {{itemDetalhe.dataVendaString}} </b> 
+            </div>
+          <div class="card-body">
+              <div class="row">
+                  <div class="form-group mb-2 col-sm-12"> 
+                      <small id="descricaoComercial" class="form-text text-muted">Nome do Cliente.</small>       
+                      <input type="text" value="{{itemDetalhe.nomeCliente}}"    class="form-control"  required  autocomplete="false" readonly="true" > 
+                  </div>
+                  <div class="form-group mb-2 col-sm-6"> 
+                      <small id="numeroNif" class="form-text text-muted">NIF.</small>       
+                      <input type="text" value="{{itemDetalhe.numeroNif}}"  class="form-control"  required  autocomplete="false"  readonly="true">                         
+                  </div>
+                  <div class="form-group mb-2 col-sm-6"> 
+                      <small id="numTelefone" class="form-text text-muted">Telefone.</small>       
+                      <input type="text" value="{{itemDetalhe.numTelefone}}"    class="form-control"  required  autocomplete="false"  readonly="true">                         
+                  </div>
+                  <div class="form-group mb-2 col-sm-12"> 
+                      <small id="morada" class="form-text text-muted">Endereço.</small>
+                      <input type="text" value="{{itemDetalhe.morada}}"   class="form-control"  required  autocomplete="false"     readonly="true"  >            
+                  </div>
+              </div> 
+              <table class="table table-sm table-hover " >
+                  <thead >           
+                  <tr>
+                      <th scope="col" style="display: none;">#</th>
+                      <th scope="col" style="width: 40%;">DESCRIÇÃO COMERCIAL</th>
+                      <th scope="col" style="width: 15%;">PREÇO </th>                       
+                      <th scope="col" style="text-align: center;width: 10%;">QUANTIDADE</th> 
+                      <th scope="col" style="text-align: right;width: 25%;">TOTAL</th>   
+                  </tr>
+                  </thead>
+                  <tbody>                   
+                      <tr *ngFor="let item of itemDetalhe.vendaItens  let i = index"     >                         
+                          <td scope="row" style="display: none;"> </td>
+                          <td style="width: 40%;">{{item.descricaoItem}}     </td>
+                          <td style="width: 15%;">{{item.preco | currency}}  </td> 
+                          <td style="text-align: center;width: 10%;">{{item.quantidade }}</td>  
+                          <td style="text-align: right;width: 25%; ">{{item.subtotal | currency}} </td>                          
+                      </tr>                     
+                      <tr>
+                          <td colspan="3"  ><b>TOTAL VENDA</b></td>
+                          <td colspan="1" style="text-align: right;  "><b>{{itemDetalhe.totalVenda | currency}}</b>  </td>
+                      </tr>  
+                      <tr>
+                          <td colspan="3"  ><b>TOTAL PAGO</b></td>
+                          <td colspan="1" style="text-align: right;  "><b>{{itemDetalhe.totalPago | currency}}</b>   </td>
+                          </tr>                      
+                  </tbody>
+              </table>                     
+          </div> 
+      </div>
+      <div class="modal-footer "> 
+          <button type="button" class="btn btn-sm btn-outline-primary pull-right" aria-label="Close" (click)="printFacturaVenda(itemDetalhe.id)">
+            <span aria-hidden="true" class="visually-hidden"><i class="fa fa-print" aria-hidden="true"></i> Imprimir</span>
+          </button>
+           
+      </div>
+  </div>
+ 
+     
+</ng-template>
+  <ng-template #templateAnular>
+    <div class="modal-header alert-danger">
+      <b class="modal-title pull-left ">Anulando!</b>
+      <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+        <span aria-hidden="true" class="visually-hidden">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      Pretende anular a venda com número <b style="text-transform: uppercase;">{{itemOpcao}}</b> ?
+      <hr>
+      <div class="form-group mb-2"> 
+        <input type="text" [(ngModel)]="itemMotivo" placeholder="informar o motivo de anulação"   class="form-control"  required  autocomplete="false"    >            
+    </div>
+    </div> 
+    <div style="text-align: right;margin-bottom: 10px;" > 
+      <button class=" btn btn-sm btn-outline-danger ml-3 mr-5" style="margin-right: 3px; color: black;" (click)="anularVenda()"  >Sim</button>                      
+      <button class=" btn btn-sm btn-outline-secondary ml-3 mr-5" style="margin-right: 3px; color: black; " (click)="modalRef?.hide()" >Não</button>
+    </div>    
+  </ng-template>

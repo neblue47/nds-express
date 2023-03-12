@@ -1,0 +1,24 @@
+.main {
+    display: flex;
+    flex-direction: column;
+   
+    height: 100vh;
+    max-width: 1920px;
+    margin: 0 auto;
+    margin-top: 100px;
+    overflow: hidden;
+  
+}
+.login {
+    min-width: 150px;
+    max-width: 550px; 
+  }
+.profile-img-card {
+    width: 110px;
+    height: 110px;
+    margin: 0 auto 10px;
+    display: block;
+    -moz-border-radius: 50%;
+    -webkit-border-radius: 50%;
+    border-radius: 50%;
+}

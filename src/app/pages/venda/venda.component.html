@@ -1,0 +1,158 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-12">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">XVendas</a></li>
+                    <li class="breadcrumb-item active">Facturação</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+    <!-- /.container-fluid -->
+</section>
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+        <div class="card" >
+            <div class="card-header">
+                <h3 class="card-title">DADOS CLIENTE</h3> 
+            </div>
+            <div class="card-body">
+                <form   [formGroup]="appvmForm"   >  
+                    <div class="row">  
+                        <div class="form-group mb-2 col-sm-4"> 
+                            <small id="descricaoComercial" class="form-text text-muted">Nome do Cliente.</small>       
+                            <input type="text"  formControlName="nomeCliente" value="{{itemVenda.cliente.nome}}"  [(ngModel)]="itemVenda.cliente.nome" class="form-control"  required  autocomplete="false" > 
+                        </div>
+                        <div class="form-group mb-2 col-sm-3"> 
+                            <small id="numeroNif" class="form-text text-muted">NIF.</small>       
+                            <input type="text" formControlName="numeroNif" value="{{itemVenda.cliente.numeroNif}}"  [(ngModel)]="itemVenda.cliente.numeroNif" class="form-control"  required  autocomplete="false" >                         
+                        </div>
+                        <div class="form-group mb-2 col-sm-3"> 
+                            <small id="numTelefone" class="form-text text-muted">Telefone.</small>       
+                            <input type="text"  formControlName="numTelefone" value="{{itemVenda.cliente.numTelefone}}" [(ngModel)]="itemVenda.cliente.numTelefone"  class="form-control"  required  autocomplete="false" >                         
+                        </div>
+                        <div class="form-group mb-2 mt-4 col-sm-2"   >
+                            <button type="button" class=" btn   btn-outline-primary mr-2" style="margin-right: 2px; padding: 5px 25px; color: black; " (click)="searchByFoneNumber()" title="Pesquisar o cliente"><i class="fa fa-search" aria-hidden="true"></i></button>
+                            <button type="button" class=" btn   btn-outline-secondary " style="padding: 5px 25px; color: black; " (click)="clearClientData()" title="Limpar"><i class="fa fa-minus-circle" aria-hidden="true"></i></button>
+                        </div>
+                    </div> 
+                    <div class="form-group mb-2"> 
+                      <small id="descricaoTecnica" class="form-text text-muted">Endereço.</small>
+                      <input type="text" formControlName="morada" value="{{itemVenda.cliente.morada}}"  [(ngModel)]="itemVenda.cliente.morada" class="form-control"  required  autocomplete="false"      >            
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-sm-11 mt-3" style="text-transform: capitalize;">
+                            <select formControlName="itemSelected"    class="form-control btn-sm  "  [(ngModel)]="itemSelected" >
+                                <option  selected class="text-muted" ><i class="text-muted">seleciona um item para carrinho...</i></option>
+                                <option *ngFor="let txTypes of listProduct" [value]="txTypes.id">
+                                    {{txTypes.descricaoComercial}}
+                                </option> 
+                            </select>
+                        </div>
+                        <div class="col-sm-1 mt-3 pull-right"   >
+                            <button class=" btn   btn-outline-success ml-1 mr-2" (click)="addItem()" style="padding: 5px 28px; color: black; "   ><i class="fa fa-plus-circle" aria-hidden="true"></i> </button>
+                        </div>
+                    </div>
+                    
+                <fieldset class="scheduler-border mt-5"> 
+                    <div class="col-sm-12 mt-1"  >
+                        <table class="table table-sm table-hover " >
+                          <thead  >           
+                            <tr>
+                              <th scope="col" style="display: none;">#</th>
+                              <th scope="col" style="width: 40%;">DESCRIÇÃO COMERCIAL</th>
+                              <th scope="col" style="width: 15%;">PREÇO </th>                       
+                              <th scope="col" style="width: 15%;">QUANTIDADE</th> 
+                              <th scope="col" style="width: 15%;">TOTAL</th>  
+                              <th style="width: 10%; text-align:center;">  </th>
+                          </tr>
+                          </thead>
+                          <tbody>
+                            <ng-container formArrayName="vendaItens">
+                              <tr *ngFor="let item of itemVenda.vendaItens  let i = index"     >
+                                <ng-container [formGroupName]="i">
+                                  <td scope="row" style="display: none;"> </td>
+                                  <td style="width: 40%;">{{item.descricaoItem}}    <input type="hidden" formControlName="itemId" value="{{item.itemId}}"  class="form-control" >  </td>
+                                  <td style="width: 15%;">{{item.preco | currency}} <input type="hidden" formControlName="preco" value="{{item.preco}}"  class="form-control" > </td> 
+                                  <td style="width: 15%;"><input  type="number" style="width: 80px; text-align: center; " formControlName="quantidade"   value="{{item.quantidade}}" [(ngModel)]="item.quantidade" (change)="onChangeEvent($event)"       ></td>  
+                                  <td style="width: 15%; ">{{item.subtotal*item.quantidade | currency}} <input type="hidden" formControlName="subtotal" value="{{item.subtotal*item.quantidade}}"  [(ngModel)]="item.subtotal"  class="form-control" ></td>   
+                                  <td style="text-align: center; width: 10%;">
+                                    <div>                             
+                                        <button class=" btn btn-sm btn-outline-danger s" style="margin-right: 3px; color: black;" (click)="removeItem(item.itemId)"   ><i class="fa fa-trash" aria-hidden="true"></i> Remove </button> 
+                                    </div>
+                                  </td>
+                                  </ng-container>
+                              </tr> 
+                            </ng-container>
+                              <tr>
+                                <td colspan="3"  ><b>TOTAL VENDA</b><input type="hidden" formControlName="totalVenda" value="{{_totalVenda}}"  class="form-control" [(ngModel)]="_totalVenda" ></td>
+                                <td colspan="2">{{_totalVenda | currency}} <input type="hidden" formControlName="totalPago" value="{{_totalpagar}}"  class="form-control"[(ngModel)]="_totalpagar" ></td>
+                              </tr>                       
+                          </tbody>
+                        </table> 
+                      </div>
+                </fieldset>
+                <input type="hidden"  formControlName="clienteId" value="{{itemVenda.cliente.id}}" [(ngModel)]="itemVenda.cliente.id"  class="form-control"  required  autocomplete="false" > 
+                    <div class="modal-footer"> 
+                     <button class="btn btn-outline-primary mr-2"  (click)="confirmSale(templateDelete,1)"*ngIf="!_vendaResponse" [disabled]="appvmForm.controls.totalVenda.value === 0"><i class="fas fa-money-check-alt"></i> Finalizar</button> 
+                     <button class="btn btn-outline-secondary" (click)="clearAlltData()" *ngIf="!_vendaResponse"><i class='fas fa-eraser'></i> Limpar</button>
+                     <button class=" btn  btn-outline-success ml-1 mr-2" (click)="printFacturaVenda(_vendaResponse.id)" *ngIf="_vendaResponse"    ><i class="fas fa-print" aria-hidden="true"></i> Imprimir </button>
+                   </div>
+                  </form>
+            </div>
+        </div>
+    </div>
+</section>
+<ng-template #templateDelete>
+    <div class="modal-header alert-success">
+      <b class="modal-title pull-left ">Finalizando a venda!</b>
+      <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+        <span aria-hidden="true" class="visually-hidden">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+        <table class="table table-sm table-hover " >
+            <thead class="thead-dark">           
+              <tr>                
+              </tr>
+            </thead>
+            <tbody>   
+              <tr>
+                <td colspan="5">
+                  <div class="row"> 
+                    <div class="form-group col-sm-12 col-sm-offset-1 mb-2 mg-b-5 mg-t-20 mg-lg-t-20  "> 
+                      <label style="margin-right: 3px; color: black; padding: 5px 8px;" *ngFor="let enumVenda of enumVendaType; let i=index"  >     
+                        <span class="form-text text-muted" > {{enumVenda.texto}} </span>
+                        <input type="radio" [name]="tipoPagamento" [checked]="enumVenda.selected" [value]="enumVenda.value" (change)="enumVenda.value" [(ngModel)]="tipoPagamento"  >
+                      </label>                 
+                    </div>
+                  </div>
+                </td>
+              </tr>             
+                <tr>
+                  <td colspan="2"  ><b>TOTAL VENDA</b></td>
+                  <td colspan="3" style="  text-align: right;">{{_totalVenda | currency}}</td>
+                </tr>
+                <tr>
+                  <td colspan="2"  ><b>TOTAL A PAGAR</b></td>
+                  <td colspan="3" style="  text-align: right;"> {{_totalpagar | currency}}</td>
+                </tr>   
+                <tr *ngIf="tipoPagamento === 2">
+                  <td colspan="2"  ><b>EM DÍVIDA</b></td>
+                  <td colspan="3" style="  text-align: right;"> {{_emDivida | currency}}</td>
+                </tr>  
+                <tr>
+                  <td colspan="2"  ><b>Digite o valor...</b></td>
+                  <td colspan="3"><input  type="text"  format="currency" style="width: 100%; text-align: right ; border: 0;"  value="{{_totalpagar}}" [(ngModel)]="_totalpagar" (change)="onChangeValue($event)"   ></td>
+                </tr>         
+            </tbody>
+          </table>
+    </div> 
+    <div style="text-align: right;margin-bottom: 10px;" > 
+      <button class=" btn btn-sm btn-outline-danger ml-1 mr-1" style="margin-right: 3px; color: black;"  (click)="submitVenda()"  >Sim</button>                      
+      <button class=" btn btn-sm btn-outline-secondary ml-1 mr-2" style="margin-right: 3px; color: black; " (click)="modalRef?.hide()" >Não</button>
+    </div>    
+  </ng-template>

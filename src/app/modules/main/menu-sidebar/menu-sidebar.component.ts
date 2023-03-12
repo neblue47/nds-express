@@ -38,24 +38,69 @@ export const MENU = [
         path: ['/']
     },
     {
-        name: 'Blank',
-        iconClasses: 'fas fa-file',
-        path: ['/blank']
-    },
-    {
-        name: 'Main Menu',
-        iconClasses: 'fas fa-folder',        
+        name: 'XVendas',
+        iconClasses: 'fas fa-shopping-cart',        
         children: [
             {
-                name: 'Sub Menu',
-                iconClasses: 'far fa-address-book',
-                path: ['/sub-menu-1']
+                name: 'Facturação',
+                iconClasses: 'fas fa-cash-register',
+                path: ['/facturacao']
             },
             {
-                name: 'Blank',
-                iconClasses: 'fas fa-file',
-                path: ['/sub-menu-2']
+                name: 'Diária',
+                iconClasses: 'fas fa-wallet',
+                path: ['/facturacao-diria']
             }
         ]
-    }
+    },
+    {
+        name: 'Gestão',
+        iconClasses: 'fa fa-tasks',        
+        children: [
+           
+            {
+                name: 'Produtos',
+                iconClasses: 'fas fa-book',
+                path: ['/produtos']
+            },
+            {
+                name: 'Clientes',
+                iconClasses: 'fas fa-user-friends',
+                path: ['/clientes']
+            }
+        ]
+    },
+    {
+        name: 'Relatórios',
+        iconClasses: 'fas fa-file',        
+        children: [
+            {
+                name: 'Vendas',
+                iconClasses: 'fas fa-file-invoice',
+                path: ['/relatorio-vendas']
+            },
+            {
+                name: 'Produtos',
+                iconClasses: 'fas fa-wallet',
+                path: ['/relatorio-produtos']
+            }
+        ]
+    },
+    {
+        name: 'Configurações',
+        iconClasses: 'fas fa-cogs',        
+        children: [
+            {
+                name: 'Utilizadores',
+                iconClasses: 'fas fa-users',
+                path: ['/utilizadores']
+            },
+            {
+                name: 'Instituição',
+                iconClasses: 'fas fa-building',
+                path: ['/instituicao']
+            }
+        ]
+    } 
+    
 ];

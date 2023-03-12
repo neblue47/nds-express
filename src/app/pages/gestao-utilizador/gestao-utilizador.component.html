@@ -1,0 +1,139 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+             
+            <div class="col-sm-12">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Configurações</a></li>
+                    <li class="breadcrumb-item active">Utilizadores</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+    <!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <!-- Default box -->
+    <div class="container-fluid">
+        <div class="card" *ngIf="!userSelected">
+            <div class="card-header">
+                <h3 class="card-title">LISTA DE UTILIZADORES</h3>
+                <div class="card-tools">                   
+                    <button type="button" class="btn btn-sm btn-outline-success" data-widget="Novo" data-toggle="tooltip" title="Novo" (click)="appNovo()">
+                        <i class="fa fa-plus-circle"></i> Novo
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <table class="table table-sm table-hover " >
+                    <thead >           
+                      <tr>
+                        <th scope="col" style="display: none;">#</th>
+                        <th scope="col">NOME</th>
+                        <th scope="col">LOGIN</th>
+                        <th scope="col">GRUPO</th> 
+                        <th scope="col" class="text-center">ESTADO</th>  
+                        <th style="width: 20%; text-align:center;"><input class="form-control" type="text"  placeholder="Pesquisar..."   >  </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let appsch of returnedArray  ">
+                          <td scope="row" style="display: none;">{{appsch.id}}</td>
+                          <td>{{appsch.fullName}}</td>
+                          <td>{{appsch.username}}</td> 
+                          <td>{{appsch.userGroupDescription}}</td>   
+                          <td class="text-center">{{appsch.status ? 'Activo' : 'Inactivo'}}</td>
+                          <td style="text-align: right; width: 20%;">
+                              <div> 
+                                  
+                                  <button class=" btn btn-sm btn-outline-secondary ml-3 mr-2" style="color: black;" (click)="EditaModel(appsch)"  ><i class="fas fa-edit" aria-hidden="true"></i> Editar</button>
+                                  <button class=" btn btn-sm btn-outline-danger s" style="color: black;"  (click)="excluirItemForm(templateDelete,appsch)"   ><i class="fa fa-trash" aria-hidden="true"  ></i> Excluir</button>    
+        
+                              </div>
+                          </td>
+                      </tr>
+                    </tbody>
+                  </table> 
+                  <div class="row">
+                    <div class="col-xs-12 col-12 " *ngIf="totalItens > 10">
+                      <pagination [totalItems]="totalItens" [(ngModel)]="currentPage" (pageChanged)="pageChanged($event)" [itemsPerPage]="5"  previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;"></pagination>
+                    </div>
+                  </div>
+            </div>
+            <!-- /.card-body -->             
+        </div>
+        <!-- /.card Table-->
+        <div class="card" *ngIf="userSelected">
+            <div class="card-header">
+                <h3 class="card-title">EDITOR DE UTILIZADOR</h3> 
+            </div>
+            <form  [formGroup]="appvmForm"   (submit)="submitForm()">
+                <div  class="card-body"  >  
+             
+            
+                    <div class="form-group mb-2"> 
+                     <small id="fullname" class="form-text text-muted">Nome Completo.</small>       
+                     <input type="text" formControlName="fullName"  class="form-control"  required  autocomplete="false" > 
+                     <span *ngIf="appvmForm.controls.fullName.errors" style="color: red; font-size: 12px;">
+                      * campo obrigatório
+                     </span>
+                    </div>         
+                    <div class="form-group mb-2"> 
+                      <small id="username" class="form-text text-muted">Utilizador.</small>
+                      <input type="text" formControlName="username"  class="form-control"  required  autocomplete="false"  value="{{singleSelect?.name}}"   >
+                      <span *ngIf="appvmForm.controls.username.errors" style="color: red; font-size: 12px;">
+                        * campo obrigatório
+                      </span>        
+                    </div>
+                    <div class="form-group mb-2"> 
+                      <small id="password" class="form-text text-muted" >Palavra passe.</small>
+                      <input type="password" formControlName="password"  class="form-control"  required autocomplete="false"    >       
+                      <span *ngIf="appvmForm.controls.password.errors" style="color: red; font-size: 12px;">
+                        *  campo obrigatório, deve ter no minimo 8 carateres, pelo menos número, um caracter maiuscula e um caracter especial
+                      </span>
+                    </div> 
+                    
+                    <div class="form-group mb-2">
+                      <small id="userGroup" class="form-text text-muted">Grupo de Acesso.</small>  
+                      <select formControlName="userGroup"  class="form-control" id="userGroup" > 
+                        <option *ngFor="let usTypes of usersTypes" [value]="usTypes.value">
+                          {{usTypes.texto}}
+                        </option>
+                      </select>
+                      <span *ngIf="appvmForm.controls.userGroup.errors" style="color: red; font-size: 12px;">
+                        * campo obrigatório
+                      </span> 
+                    </div> 
+                    <input type="hidden" formControlName="status"    value="true">
+                    <div class="modal-footer"> 
+                     <button   class="btn btn-primary" style="margin-right: 5px;" [disabled]="!appvmForm.valid">Salvar</button> 
+                     <button (click)="voltar()" class="btn btn-secondary">Fechar</button>
+                    </div>
+                  </div>
+            </form>
+            
+        </div>
+         <!-- /.card Form-->
+    </div>
+
+    <ng-template #templateDelete>
+        <div class="modal-header alert-danger">
+          <b class="modal-title pull-left ">Eliminando!</b>
+          <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()">
+            <span aria-hidden="true" class="visually-hidden">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          Pretende excluir <b style="text-transform: uppercase;">{{itemOpcao}}</b> ?
+        </div> 
+        <div style="text-align: right;margin-bottom: 10px;" > 
+          <button class=" btn btn-sm btn-outline-danger ml-3 mr-1" style=" color: black;"   >Sim</button>                      
+          <button class=" btn btn-sm btn-outline-secondary ml-3 mr-2" style="color: black; " (click)="modalRef?.hide()" >Não</button>
+        </div>    
+      </ng-template>
+    
+</section>
+<!-- /.content -->

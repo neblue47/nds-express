@@ -10,15 +10,16 @@ import {HeaderComponent} from '@modules/main/header/header.component';
 import {FooterComponent} from '@modules/main/footer/footer.component';
 import {MenuSidebarComponent} from '@modules/main/menu-sidebar/menu-sidebar.component';
 import {BlankComponent} from '@pages/blank/blank.component';
-import {ReactiveFormsModule} from '@angular/forms';
+import {FormsModule,ReactiveFormsModule} from '@angular/forms';
 import {ProfileComponent} from '@pages/profile/profile.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {ModalModule} from 'ngx-bootstrap/modal';
 import {RegisterComponent} from '@modules/register/register.component';
 import {DashboardComponent} from '@pages/dashboard/dashboard.component';
 import {ToastrModule} from 'ngx-toastr';
 import {MessagesComponent} from '@modules/main/header/messages/messages.component';
 import {NotificationsComponent} from '@modules/main/header/notifications/notifications.component';
-
+import { PaginationModule } from 'ngx-bootstrap/pagination';
 import {registerLocaleData} from '@angular/common';
 import localeEn from '@angular/common/locales/en';
 import {UserComponent} from '@modules/main/header/user/user.component';
@@ -35,6 +36,15 @@ import {uiReducer} from './store/ui/reducer';
 import {ProfabricComponentsModule} from '@profabric/angular-components';
 import {defineCustomElements} from '@profabric/web-components/loader';
 import {SidebarSearchComponent} from './components/sidebar-search/sidebar-search.component';
+import { GestaoUtilizadorComponent } from './pages/gestao-utilizador/gestao-utilizador.component';
+import { GestaoProdutoComponent } from './pages/gestao-produto/gestao-produto.component';
+import { GestaoClienteComponent } from './pages/gestao-cliente/gestao-cliente.component';
+import { httpInterceptorProviders } from './_helpers';
+import { VendaComponent } from './pages/venda/venda.component';
+import { VendaDiriaComponent } from './pages/venda-diria/venda-diria.component';
+import { RelatorioVendaComponent } from './pages/relatorio-venda/relatorio-venda.component';
+import { RelatorioProdutoComponent } from './pages/relatorio-produto/relatorio-produto.component';
+import { InstituicaoComponent } from './pages/instituicao/instituicao.component';
 
 defineCustomElements();
 registerLocaleData(localeEn, 'en-EN');
@@ -61,13 +71,22 @@ registerLocaleData(localeEn, 'en-EN');
         SubMenuComponent,
         MenuItemComponent,
         ControlSidebarComponent,
-        SidebarSearchComponent
+        SidebarSearchComponent,
+        GestaoUtilizadorComponent,
+        GestaoProdutoComponent,
+        GestaoClienteComponent,
+        VendaComponent,
+        VendaDiriaComponent,
+        RelatorioVendaComponent,
+        RelatorioProdutoComponent,
+        InstituicaoComponent
     ],
     imports: [
         BrowserModule,
         StoreModule.forRoot({auth: authReducer, ui: uiReducer}),
         HttpClientModule,
         AppRoutingModule,
+        FormsModule,
         ReactiveFormsModule,
         BrowserAnimationsModule,
         ToastrModule.forRoot({
@@ -75,9 +94,11 @@ registerLocaleData(localeEn, 'en-EN');
             positionClass: 'toast-top-right',
             preventDuplicates: true
         }),
-        ProfabricComponentsModule
+        ProfabricComponentsModule,
+        ModalModule.forRoot(),
+        PaginationModule.forRoot(),
     ],
-    providers: [],
+    providers: [httpInterceptorProviders],
     bootstrap: [AppComponent]
 })
 export class AppModule {}

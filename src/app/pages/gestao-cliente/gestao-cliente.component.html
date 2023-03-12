@@ -1,0 +1,61 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2"> 
+            <div class="col-sm-12">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Gestão</a></li>
+                    <li class="breadcrumb-item active">Clientes</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+    <!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <!-- Default box -->
+    <div class="container-fluid">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title">LISTA DE CLIENTES</h3>                
+            </div>
+            <div class="card-body">
+                <table class="table table-sm table-hover " >
+                    <thead>           
+                      <tr>
+                        <th scope="col" style="display: none;">#</th>
+                        <th scope="col">NOME</th>
+                        <th scope="col" style="text-align: center;  ">Nº NIF</th> 
+                        <th scope="col" style="text-align: center;  ">Nº TELEFONE</th>
+                        <th scope="col" style="text-align: center;  ">TOTAL CORRENTE</th>
+                        <th scope="col" style="text-align: center;  ">TOTAL DIVIDA</th> 
+                        <th style="width: 20%; text-align:center;"><input class="form-control" type="text"  placeholder="Pesquisar..."   >  </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let appsch of returnedArray  ">
+                            <td scope="row" style="display: none;">{{appsch.id}}</td>
+                            <td >{{appsch.cliente.nome}}</td>
+                            <td style="text-align: center;  ">{{appsch.cliente.numTelefone}}</td> 
+                            <td style="text-align: center;  ">{{appsch.cliente.numTelefone }}</td>  
+                            <td style="text-align: center; color:blue ">{{appsch.totalCorrente | currency}}</td>  
+                            <td style="text-align: center; color:red ">{{appsch.totalDivida | currency}}</td> 
+                            <td style="text-align: right; width: 20%;">
+                                <div>                             
+                                    <button class=" btn btn-sm btn-outline-secondary ml-3 mr-2" style="color: black;"    ><i class="fa fa-edit" aria-hidden="true"></i> Editar</button>
+                                    <button class=" btn btn-sm btn-outline-success s" style="color: black;"     ><i class="fa fa-credit-card" aria-hidden="true"></i> Pagar</button>    
+          
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                  </table>
+            </div>
+            <!-- /.card-body --> 
+        </div> 
+    </div>
+    <!-- /.card -->
+</section>
+<!-- /.content -->
