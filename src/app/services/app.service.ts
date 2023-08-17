@@ -6,12 +6,15 @@ import { Login } from '@/_models/Login';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'environments/environment';
 import { AuthService } from '@/_services/Auth.service';
+import { InstituicaoService } from '@/_services/instituicao.service';
+import { InstituicaoView } from '../_models/InstituicaoView';
 
 @Injectable({
     providedIn: 'root'
 })
 export class AppService {
     public user: any = null;
+    public instiDados: any = null;
     private authenticated = false;
   private redirectUrl: any;
   baseUrl = `http://localhost:8080/login`;
@@ -133,6 +136,9 @@ export class AppService {
             this.logout();
             throw error;
         }
+    }
+    async checkIsAuthenticated(){
+        return this._auth.isAuthenticated();
     }
     
     logout() {

@@ -21,8 +21,25 @@
         </div>
     </div>
 </form>
-
-<ul class="navbar-nav ml-auto">
-    
-    <app-user></app-user> 
+    <header> </header> 
+     
+<ul class="navbar-nav ml-auto">    
+    <a (click)="modalLogout(templateLogout)" class="btn btn-default btn-flat float-right">
+        <i class="fas fa-sign-out-alt"></i>  Sair
+    </a>
 </ul>
+<ng-template #templateLogout>
+    <div class="modal-header pt-reduced pb-reduced alert-danger">
+      <b class="modal-title pull-left ">Saindo...</b>
+      <button type="button" class="btn-close close pull-right" aria-label="Close" (click)="modalRef?.hide()" >
+        <span aria-hidden="true" class="visually-hidden">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      Pretende sair do sistema?
+    </div> 
+    <div style="text-align: right;margin-bottom: 10px;" > 
+      <button class=" btn btn-sm btn-outline-danger ml-3 mr-1" style="color: black;"  (click)=" confirmLogout()"  >Sim</button>                      
+      <button class=" btn btn-sm btn-outline-secondary ml-3 mr-1" style=" color: black; "  (click)="modalRef?.hide()" >Não</button>
+    </div>    
+</ng-template>

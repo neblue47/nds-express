@@ -39,7 +39,8 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     }
 
     async getProfile() {
-        if (this.appService.user) {
+         
+        if (this.appService.checkIsAuthenticated() && this.appService.user) {
             return true;
         }
 

@@ -20,6 +20,7 @@ import { VendaComponent } from './pages/venda/venda.component';
 import { RelatorioVendaComponent } from './pages/relatorio-venda/relatorio-venda.component';
 import { RelatorioProdutoComponent } from './pages/relatorio-produto/relatorio-produto.component';
 import { InstituicaoComponent } from './pages/instituicao/instituicao.component';
+import { StocksComponent } from '@pages/stocks/stocks.component';
 
 const routes: Routes = [
     {
@@ -47,6 +48,10 @@ const routes: Routes = [
             {
                 path: 'produtos',
                 component: GestaoProdutoComponent
+            },
+            {
+                path: 'stocks',
+                component: StocksComponent
             },
             {
                 path: 'relatorio-vendas',

@@ -8,7 +8,8 @@ import {
 import {UntypedFormGroup, UntypedFormControl, Validators} from '@angular/forms';
 import {ToastrService} from 'ngx-toastr';
 import {AppService} from '@services/app.service';
-
+import {DateTime} from 'luxon';
+import packageInfo from './../../../../package.json';
 @Component({
     selector: 'app-login',
     templateUrl: './login.component.html',
@@ -20,14 +21,15 @@ export class LoginComponent implements OnInit, OnDestroy {
     public isAuthLoading = false;
     public isGoogleLoading = false;
     public isFacebookLoading = false;
-
+    public appVersion = packageInfo.version;
+    public currentDate: string = DateTime.now().toFormat('dd-MM-yyyy HH:mm');
     constructor(
         private renderer: Renderer2,
         private toastr: ToastrService,
         private appService: AppService
     ) {}
 
-    ngOnInit() {
+    ngOnInit() { 
         this.renderer.addClass(
             document.querySelector('app-root'),
             'login-page'
@@ -44,7 +46,7 @@ export class LoginComponent implements OnInit, OnDestroy {
             await this.appService.auth(this.loginForm.value);
             this.isAuthLoading = false;
         } else {
-            this.toastr.error('Form is not valid!');
+            this.toastr.error('Dados de acesso errados!');
         }
     }
 
@@ -65,5 +67,18 @@ export class LoginComponent implements OnInit, OnDestroy {
             document.querySelector('app-root'),
             'login-page'
         );
+    }
+
+    msg = '';
+
+    handleSubmit(e){
+      e.preventDefault();
+      alert(this.msg);
+    }
+  
+    handleKeyUp(e){
+       if(e.keyCode === 13){
+          this.loginByAuth();
+       }
     }
 }

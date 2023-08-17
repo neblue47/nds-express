@@ -37,5 +37,12 @@ import { ClienteView, RelatorioVendaView, VendaFilter, VendaView } from '../_mod
     };
     return this.http.get<any>(`${this.baseUrl}/printFactura/${vendaId}`,httpOptions);
   } 
+  getPeriodInvoice(filter:VendaFilter): Observable<any>{
+    const httpOptions = {
+      responseType: 'arraybuffer' as 'json'
+      // 'responseType'  : 'blob' as 'json'        //This also worked
+    };
+    return this.http.post<any>(`${this.baseUrl}/printRelatorioVendaPeriodo`,filter,httpOptions);
+  } 
  
   }

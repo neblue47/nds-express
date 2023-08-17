@@ -19,7 +19,9 @@ import {DashboardComponent} from '@pages/dashboard/dashboard.component';
 import {ToastrModule} from 'ngx-toastr';
 import {MessagesComponent} from '@modules/main/header/messages/messages.component';
 import {NotificationsComponent} from '@modules/main/header/notifications/notifications.component';
-import { PaginationModule } from 'ngx-bootstrap/pagination';
+import { PaginationModule } from 'ngx-bootstrap/pagination'; 
+import { TabsModule } from 'ngx-bootstrap/tabs';
+ 
 import {registerLocaleData} from '@angular/common';
 import localeEn from '@angular/common/locales/en';
 import {UserComponent} from '@modules/main/header/user/user.component';
@@ -45,6 +47,10 @@ import { VendaDiriaComponent } from './pages/venda-diria/venda-diria.component';
 import { RelatorioVendaComponent } from './pages/relatorio-venda/relatorio-venda.component';
 import { RelatorioProdutoComponent } from './pages/relatorio-produto/relatorio-produto.component';
 import { InstituicaoComponent } from './pages/instituicao/instituicao.component';
+import { StocksComponent } from './pages/stocks/stocks.component';
+import { StocksEntradaComponent } from './pages/stocks-entrada/stocks-entrada.component';
+
+
 
 defineCustomElements();
 registerLocaleData(localeEn, 'en-EN');
@@ -79,7 +85,9 @@ registerLocaleData(localeEn, 'en-EN');
         VendaDiriaComponent,
         RelatorioVendaComponent,
         RelatorioProdutoComponent,
-        InstituicaoComponent
+        InstituicaoComponent,
+        StocksComponent,
+        StocksEntradaComponent
     ],
     imports: [
         BrowserModule,
@@ -96,7 +104,8 @@ registerLocaleData(localeEn, 'en-EN');
         }),
         ProfabricComponentsModule,
         ModalModule.forRoot(),
-        PaginationModule.forRoot(),
+        PaginationModule.forRoot(), 
+        TabsModule.forRoot()
     ],
     providers: [httpInterceptorProviders],
     bootstrap: [AppComponent]

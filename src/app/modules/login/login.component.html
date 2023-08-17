@@ -1,7 +1,6 @@
 <div class="card card-outline card-primary login">
     <div class="card-header text-center">
-        <img id="profile-img" class="profile-img-card " src="//ssl.gstatic.com/accounts/ui/avatar_2x.png" />
-        <p id="profile-name" class="profile-name-card"></p> 
+        <img id="profile-img" class="profile-img-card " src="assets/img/default-nds.png" />
     </div>
     <div class="card-body ">
         
@@ -16,7 +15,7 @@
                 </div>
             </div>
             <div class="input-group mb-3">
-                <input formControlName="password" type="password" class="form-control" placeholder="Password" />
+                <input formControlName="password" type="password" class="form-control" placeholder="Password" (keyup)="handleKeyUp($event)" />
                 <div class="input-group-append">
                     <div class="input-group-text">
                         <span class="fas fa-lock"></span>

@@ -29,7 +29,7 @@ export class GestaoProdutoComponent {
   public appvmForm: any; 
   public modalRef?: BsModalRef; 
   public statesTypes = [{value:1 , texto:'Disponivel'}, { value:2, texto:'Não Disponivel'}];
-  public isentoTypes = [{value:0 , texto:'Isento'}, { value:2, texto:'Taxa Normal'}, { value:10, texto:'Taxa Medio'}];
+  public isentoTypes = [{value:0 , texto:'Isento'}, { value:7, texto:'Taxa IVA 7%'}, { value:10, texto:'Taxa IVA 10%'}, { value:14, texto:'Taxa IVA 14%'}]; 
 
   constructor(private productService: ProdutoService,private modalService: BsModalService,private fb: FormBuilder,private toastr: ToastrService) { }
 

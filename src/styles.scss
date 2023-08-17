@@ -43,3 +43,13 @@ body {
 .nav-sidebar .menu-open > .nav-link svg.right {
     transform: none;
 }
+.modal-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 0.5rem;
+    border-bottom: 1px solid #e9ecef;
+    border-top-left-radius: calc(0.3rem - 1px);
+    border-top-right-radius: calc(0.3rem - 1px);
+}
+

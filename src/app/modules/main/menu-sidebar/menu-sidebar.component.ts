@@ -1,6 +1,6 @@
 import {AppState} from '@/store/state';
 import {UiState} from '@/store/ui/state';
-import {Component, HostBinding, OnInit} from '@angular/core';
+import {Component, HostBinding, Input, OnInit} from '@angular/core';
 import {Store} from '@ngrx/store';
 import {AppService} from '@services/app.service';
 import {Observable} from 'rxjs';
@@ -15,6 +15,7 @@ export class MenuSidebarComponent implements OnInit {
     @HostBinding('class') classes: string = BASE_CLASSES;
     public ui: Observable<UiState>;
     public user;
+    
     public menu = MENU;
 
     constructor(
@@ -27,7 +28,7 @@ export class MenuSidebarComponent implements OnInit {
         this.ui.subscribe((state: UiState) => {
             this.classes = `${BASE_CLASSES} ${state.sidebarSkin}`;
         });
-        this.user = this.appService.user;
+        this.user = this.appService.user; 
     }
 }
 
@@ -35,7 +36,7 @@ export const MENU = [
     {
         name: 'Dashboard',
         iconClasses: 'fas fa-tachometer-alt',
-        path: ['/']
+        path: ['/'],
     },
     {
         name: 'XVendas',
@@ -67,6 +68,11 @@ export const MENU = [
                 name: 'Clientes',
                 iconClasses: 'fas fa-user-friends',
                 path: ['/clientes']
+            },
+            {
+                name: 'Inventário',
+                iconClasses: 'fas fa-dolly-flatbed',
+                path: ['/stocks']
             }
         ]
     },

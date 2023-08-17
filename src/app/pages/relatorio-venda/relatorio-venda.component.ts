@@ -116,6 +116,19 @@ export class RelatorioVendaComponent {
     });
  
   }
+  printRelatorioVenda(){
+    let  filter = this.searchvmForm.value;
+    console.log(filter);
+    if(filter.dataInicial   == '' && filter.dataFim  == '' ){
+      return ;
+    }
+
+    this.reportService.getPeriodInvoice(filter).subscribe((item : any) => {
+      const file = new Blob([item], { type: 'application/pdf' });
+      const fileURL = URL.createObjectURL(file);
+      window.open(fileURL);
+    });
+  }
   clearSearchFilter(){
     this.search();
     

@@ -15,39 +15,117 @@
 </section>
 <section class="content">
     <div class="container-fluid">
+      <div class="card"  >
         <div class="card-body">
-            <div class="nav-tabs-custom">
-                <ul class="nav nav-tabs">
-                  <li class="active"><a href="#tab_1" data-toggle="tab">Sobre a Instituição</a></li>
-                  <li><a href="#tab_2" data-toggle="tab">Dados Fiscais</a></li>
-                  <li><a href="#tab_3" data-toggle="tab">Imagem</a></li>
-                </ul>
-                <div class="tab-content">
-                  <div class="tab-pane active" id="tab_1">
-                  <div  >
-                    <div class="box-body">
-                         
-                    </div>
-                <!-- /.box-body -->
+          <div>
+            <tabset>
+              <tab heading="Sobre a Instituição" id="tab1">
+                <form class="form-horizontal"   [formGroup]="appvmFormInst"   (submit)="submitFormIns()">
+                  <div class="form-group mb-2"> 
+                    <small id="designacaoFormal" class="form-text text-muted">Designação.</small>       
+                    <input type="text" formControlName="designacaoFormal"  class="form-control form-control-sm"  required  autocomplete="false" >
+                  </div>  
+                  <div class="form-group mb-2"> 
+                    <small id="designacaoComercial" class="form-text text-muted">Designação Comercial.</small>       
+                    <input type="text" formControlName="designacaoComercial"  class="form-control form-control-sm"  required  autocomplete="false" >
+                  </div> 
+                  <div class="form-group mb-2"> 
+                    <small id="numFiscal" class="form-text text-muted">Número Fiscal.</small>       
+                    <input type="text" formControlName="numeroFiscal"  class="form-control form-control-sm"  required  autocomplete="false" >
+                  </div>   
+                  <div class="form-group mb-2"> 
+                    <small id="numTelefone" class="form-text text-muted">Telefone/Telemovel.</small>       
+                    <input type="text" formControlName="numeroTelefone"  class="form-control form-control-sm"  required  autocomplete="false" >
+                  </div> 
+                  <div class="form-group mb-2"> 
+                    <small id="endereço" class="form-text text-muted">Endereço.</small>       
+                    <input type="text" formControlName="endereco"  class="form-control form-control-sm"  required  autocomplete="false" >
+                  </div>  
+                  <div class="form-group mb-2"> 
+                    <small id="missVisao" class="form-text text-muted">Missão/ Visão/ Valores.</small>       
+                    <textarea type="text" formControlName="missaoVisao"  class="form-control form-control-sm"  required  autocomplete="false" ></textarea>
+                  </div> 
+                  <div class="modal-footer">  
+                    <button type="button" class="btn btn-info pull-right btn-parm-editar  " *ngIf="isEditavel" (click)="editarInst()" >Editar</button>
+                    <button type="button" class="btn btn-secondary pull-right btn-parm-cancelar " *ngIf="!isEditavel" (click)="cancelInst()" >Cancelar</button>
+                    <button class="btn btn-success pull-right btn-parm-salvar" *ngIf="!isEditavel" >Salvar</button>
+                  </div>
+                  <!-- /.box-footer -->
+                </form>
+              </tab>
+              <tab heading="Dados Fiscais">
+                <form class="form-horizontal" id="myFormImp" [formGroup]="appvmFormImp" (submit)="submitFormImp()"  >
+                  <div class="box-body">
+                    <div class="form-group mb-2"> 
+                      <small id="CAE" class="form-text text-muted">CAE.</small>       
+                      <input type="text" formControlName="cae"  class="form-control form-control-sm"  required  autocomplete="false" >
+                    </div> 
+                    <div class="form-group mb-2"> 
+                      <small id="Moeda" class="form-text text-muted">Moeda.</small>
+                      <select formControlName="moeda"  class="form-control form-control-sm" name="moeda" id="moeda">
+                        <option disabled selected>  Selecione... </option> 
+                        <option *ngFor="let isxTypes of moedaTypes" [value]="isxTypes.value">
+                          {{isxTypes.texto}}
+                        </option> 
+                      </select>
+                    </div> 
+                    <div class="form-group mb-2"> 
+                      <small id="taxaIva" class="form-text text-muted">Taxa de IVA.</small>
+                      <select formControlName="taxa"  class="form-control form-control-sm" >
+                        <option disabled selected>  Selecione...  </option> 
+                        <option *ngFor="let isxTypes of taxIvaTypes" [value]="isxTypes.value">
+                          {{isxTypes.texto}}
+                        </option> 
+                      </select>
+                    </div>  
+                    <div class="form-group mb-2"> 
+                      <small id="regime" class="form-text text-muted">Regime.</small>
+                      <select formControlName="taxCode"  class="form-control form-control-sm" >
+                        <option disabled selected>  Selecione...  </option> 
+                        <option *ngFor="let isxTypes of regimeTypes" value="{{isxTypes.taxCode.trim()}}">
+                          {{isxTypes.description.trim()}}
+                        </option> 
+                      </select>
+                      
+                    </div> 
+                    <div class="form-group mb-2"> 
+                      <small id="motivoIsencao" class="form-text text-muted">Motivo de Isenção.</small>
+                      <textarea formControlName="motivoIsencao" class="form-control"   name="motivoReg"  ></textarea>
+                    </div>   
+                    <div class="form-group  mb-2"> 
+                          <small id="tipoComercio" class="form-text text-muted">Comercialização.</small>
+                          <div class=" "> 
+                          <small class="control-label label-font">
+                            Produtos Gerais &nbsp;&nbsp;&nbsp;	
+                                 <input type="checkbox" class="minimal" checked name="tipo"  value="1">
+                               </small>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                               <small class="control-label label-font">
+                                 Farmaceuticos &nbsp;&nbsp;&nbsp;
+                                 <input type="checkbox" class="minimal" name="tipo" value="2">
+                               </small>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                               <small class="control-label label-font">
+                                 Serviços &nbsp;&nbsp;&nbsp;
+                                 <input type="checkbox" class="minimal" name="tipo" value="13">
+                               </small>
+                          </div>
+                       </div>
+                       <input id="id" name="id" type="hidden" value="${instDTO.id}">
+                  </div>
+                  <!-- /.box-body -->
+                   
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-info pull-right btn-parm-editar  " *ngIf="isEditavelImp" (click)="editarImp()" >Editar</button>
+                    <button type="button" class="btn btn-secondary pull-right btn-parm-cancelar " *ngIf="!isEditavelImp" (click)="cancelImp()" >Cancelar</button>
+                    <button class="btn btn-success pull-right btn-parm-salvar" *ngIf="!isEditavelImp" >Salvar</button>
+                  </div>
+                  <!-- /.box-footer -->
+                </form>
+              </tab>
               
-              </div>
-                  </div>
-                  <!-- /.tab-pane -->
-                  <div class="tab-pane" id="tab_2">
-                    <div class="box-body">
-                         
-                    </div>
-                  </div>
-                  <!-- /.tab-pane -->
-                  <div class="tab-pane" id="tab_3">
-                    <div class="box-body">
-                         
-                    </div>
-                  </div>
-                  <!-- /.tab-pane -->
-                </div>
-                <!-- /.tab-content -->
-              </div>
+            </tabset>
+          </div>
         </div>
+      </div>
+        
     </div>
 </section>

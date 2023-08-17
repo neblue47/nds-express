@@ -1,0 +1,155 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                 
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="#">Gestão</a></li>
+                    <li class="breadcrumb-item active">Inventário</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+    <!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+      <div class="card"  *ngIf="!itemEntrada">
+        <div class="card-body">
+          <div>
+            <tabset>
+              <tab heading="Entradas" id="tab1">
+                 
+                <div class="card-body">
+                    <table class="table table-sm table-hover " >
+                        <thead>           
+                          <tr>
+                            <th scope="col" style="display: none;">#</th>
+                            <th scope="col">DESCRIÇÃO</th>
+                            <th scope="col" style="text-align: center;  ">UNI</th>
+                            <th scope="col" style="text-align: center;  ">QTD</th> 
+                            <th scope="col" style="text-align: center;  ">VALOR</th>
+                            <th scope="col" style="text-align: center;  ">LOTE</th>
+                            <th scope="col" style="text-align: center;  ">DATA</th>
+                            <th scope="col" style="text-align: left;    ">UTILIZADOR</th>  
+                            <th style="width: 20%; text-align:center;"><input class="form-control" type="text"  placeholder="Pesquisar..."   >  </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <tr  >
+                                <td scope="row" style="display: none;">1</td>
+                                <td >Impressora HP DeskJet 2720</td>
+                                <td style="text-align: center;  ">UN</td> 
+                                <td style="text-align: center;  ">10</td>  
+                                <td style="text-align: center;  ">1500</td>   
+                                <td style="text-align: center;  ">LN2022</td>
+                                <td style="text-align: center;  ">15/08/2023</td>
+                                <td style="text-align: left;  ">Nelson diwidi</td>
+                                <td style="text-align: right; width: 20%;">
+                                    <div>                             
+                                        <button class=" btn btn-sm btn-outline-secondary ml-3 mr-2" style=" color: black;"  ><i class="fa fa-edit" aria-hidden="true"></i> Editar</button>
+                                        <button class=" btn btn-sm btn-outline-danger s" style="color: black;"       ><i class="fa fa-trash" aria-hidden="true"></i> Excluir</button>    
+              
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                      </table> 
+                </div> 
+                <div class="modal-footer "> 
+                    <button type="button" class="btn btn-sm btn-outline-primary pull-right"  >
+                      <span aria-hidden="true" class="visually-hidden"><i class="fa fa-print" aria-hidden="true"></i> Imprimir</span>
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-success" data-widget="Novo" data-toggle="tooltip" title="Novo" (click)=" novaEntrada()"    >
+                        <i class="fa fa-plus-circle"></i> Nova
+                    </button>
+                </div>
+              </tab>
+              <tab heading="Saidas">
+                 
+              </tab>
+              
+            </tabset>
+          </div>
+        </div>
+      </div>
+      <div class="card" *ngIf="itemEntrada">     
+         
+            <div class="card-header">
+                <h3 class="card-title">EDITOR DE ENTRADA</h3>             
+            </div>
+            <div class="card-body">
+                <form   >     
+                    <div class="row mb-2">
+                        <div class="col-sm-11 mt-3" style="text-transform: capitalize;">
+                            <select    class="form-control btn-sm   " style="width: 100%;" tabindex="-1"      >
+                                <option  selected class="text-muted select" ><i class="text-muted">seleciona um item...</i></option>
+                                <option *ngFor="let txTypes of listProduct" [value]="txTypes.id">
+                                  {{txTypes.descricaoComercial}}
+                              </option>  
+                            </select>
+                        </div>
+                        <div class="col-sm-1 mt-3 pull-right"   >
+                            <button class=" btn   btn-outline-success ml-1 mr-2"  style="padding: 5px 20px; color: black; "   ><i class="fa fa-plus-circle" aria-hidden="true"></i> </button>
+                        </div>
+                    </div>         
+                    <fieldset class="scheduler-border mt-5"> 
+                      <div class="col-sm-12 mt-1"  >
+                          <table class="table table-sm table-hover " >
+                            <thead  >           
+                              <tr>
+                                <th scope="col" style="display: none;">#</th>
+                                <th scope="col">DESCRIÇÃO</th>
+                                <th scope="col" style="width: 15%; text-align: center;">UNIDADE</th>
+                                <th scope="col" style="text-align: center;  ">QTD</th> 
+                                <th scope="col" style="text-align: center;  ">VALOR</th>
+                                <th scope="col" style="text-align: center;  ">LOTE</th>
+                                <th style="width: 10%; text-align:center;">  </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                              <ng-container  >
+                                <tr      >
+                                  <ng-container  >
+                                    <td scope="row" style="display: none;">1</td>                                     
+                                    <td style="width: 40%;"><input type="text"  readonly  value="Impressora HP DeskJet 2720"  class="form-control form-control-sm" >  </td>
+                                    <td style="width: 10%;"><select class="form-control form-control-sm" style="text-align: left; "> <option  disabled></option> <option selected>UNITÁRIO</option> <option>CAIXA</option> </select>  </td> 
+                                    <td style="width: 10%;"><input  type="number"   value="100"     class="form-control form-control-sm" style="text-align: right; "></td>  
+                                    <td style="width: 10%;"><input  type="number"   value="37000"   class="form-control form-control-sm" style="text-align: right; "></td>  
+                                    <td style="width: 15%;"><input  type="text"     value="LN2022" class="form-control form-control-sm" style="text-align: center; "></td>    
+                                    <td style="width: 10%;">
+                                      <div>                             
+                                          <button class=" btn btn-sm btn-outline-danger s" style="margin-right: 3px; color: black;"     ><i class="fa fa-trash" aria-hidden="true"></i> Remove </button> 
+                                      </div>
+                                    </td>
+                                    </ng-container>
+                                </tr> 
+                              </ng-container>
+                                <tr>
+                                  <td colspan="5"  ><b> </b><input type="hidden"   value=""  class="form-control"  ></td>
+                                  <td colspan="2">  <input type="hidden"  value=""  class="form-control"  ></td>
+                                </tr>                       
+                            </tbody>
+                          </table> 
+                        </div>
+                  </fieldset>
+                  
+                    <div class="modal-footer"> 
+                     <button  class="btn btn-outline-primary btn-sm" style="margin-right: 5px;"  >Salvar</button> 
+                     <button  class="btn btn-outline-secondary btn-sm" (click)="cancelNovaEntrada()">Fechar</button>
+                   </div>
+                  </form>
+            </div>
+       
+    </div>   
+    </div>
+</section>
+<!-- /.content -->
+ 
+    
+ 

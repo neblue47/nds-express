@@ -12,13 +12,18 @@ export class UtilizadorService {
   
 baseUrl = `${environment.urlPrincipal}`;
 
+getUserById(id: any):Observable<PageView<UserView>> {
+  return this.http.get<PageView<UserView>>(`${this.baseUrl}/utilizadores/${id}`);
+}
 deleteUserById(id: any) {
   return this.http.delete<boolean>(`${this.baseUrl}/utilizadores/${id}`);
 }
-
 constructor(private http: HttpClient) { }
 getAll(): Observable<PageView<UserView>>{
   return this.http.get<PageView<UserView>>(`${this.baseUrl}/utilizadores`);
+}
+getUserLogadoDetail(): Observable<UserView>{
+  return this.http.get<UserView>(`${this.baseUrl}/utilizadores/utilizadorDetail`);
 }
 getAllRoles(): Observable<RoleView[]>{
   return this.http.get<RoleView[]>(`${this.baseUrl}/GetAllRoles`);
