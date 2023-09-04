@@ -19,7 +19,7 @@
 <!-- Main content -->
 <section class="content">
     <div class="container-fluid">
-      <div class="card"  *ngIf="!itemEntrada">
+      <div class="card"  *ngIf="!itemEntradaId">
         <div class="card-body">
           <div>
             <tabset>
@@ -78,16 +78,16 @@
           </div>
         </div>
       </div>
-      <div class="card" *ngIf="itemEntrada">     
+      <div class="card" *ngIf="itemEntradaId">     
          
             <div class="card-header">
                 <h3 class="card-title">EDITOR DE ENTRADA</h3>             
             </div>
             <div class="card-body">
-                <form   >     
+                <form  [formGroup]="appvmForm"  >     
                     <div class="row mb-2">
                         <div class="col-sm-11 mt-3" style="text-transform: capitalize;">
-                            <select    class="form-control btn-sm   " style="width: 100%;" tabindex="-1"      >
+                            <select  formControlName="itemEntradaId"    class="form-control btn-sm  " [(ngModel)]="itemEntradaId" class="form-control btn-sm   " style="width: 100%;" tabindex="-1"      >
                                 <option  selected class="text-muted select" ><i class="text-muted">seleciona um item...</i></option>
                                 <option *ngFor="let txTypes of listProduct" [value]="txTypes.id">
                                   {{txTypes.descricaoComercial}}
@@ -95,8 +95,8 @@
                             </select>
                         </div>
                         <div class="col-sm-1 mt-3 pull-right"   >
-                            <button class=" btn   btn-outline-success ml-1 mr-2"  style="padding: 5px 20px; color: black; "   ><i class="fa fa-plus-circle" aria-hidden="true"></i> </button>
-                        </div>
+                            <button class=" btn   btn-outline-success ml-1 mr-1"  style="padding: 5px 20px; color: black; " (click)="addItem()"  ><i class="fa fa-plus-circle" aria-hidden="true"></i> </button>
+                        </div> 
                     </div>         
                     <fieldset class="scheduler-border mt-5"> 
                       <div class="col-sm-12 mt-1"  >
@@ -113,18 +113,18 @@
                             </tr>
                             </thead>
                             <tbody>
-                              <ng-container  >
-                                <tr      >
+                              <ng-container  formArrayName="itemEntradaArray" >
+                                <tr  *ngFor="let item of itensEntrada  let i = index"      >
                                   <ng-container  >
-                                    <td scope="row" style="display: none;">1</td>                                     
-                                    <td style="width: 40%;"><input type="text"  readonly  value="Impressora HP DeskJet 2720"  class="form-control form-control-sm" >  </td>
+                                    <td scope="row" style="display: none;"><input type="hidden"  readonly  value="{{item.productId}}"  class="form-control form-control-sm"> </td>                                     
+                                    <td style="width: 40%;"><input type="text"  readonly  value="{{item.productDescricao}}"  class="form-control form-control-sm" >  </td>
                                     <td style="width: 10%;"><select class="form-control form-control-sm" style="text-align: left; "> <option  disabled></option> <option selected>UNITÁRIO</option> <option>CAIXA</option> </select>  </td> 
-                                    <td style="width: 10%;"><input  type="number"   value="100"     class="form-control form-control-sm" style="text-align: right; "></td>  
-                                    <td style="width: 10%;"><input  type="number"   value="37000"   class="form-control form-control-sm" style="text-align: right; "></td>  
-                                    <td style="width: 15%;"><input  type="text"     value="LN2022" class="form-control form-control-sm" style="text-align: center; "></td>    
+                                    <td style="width: 10%;"><input  type="number"   value="{{item.quantidade}}"     class="form-control form-control-sm" style="text-align: right; "></td>  
+                                    <td style="width: 10%;"><input  type="number"   value="{{item.valor}}"   class="form-control form-control-sm" style="text-align: right; "></td>  
+                                    <td style="width: 15%;"><input  type="text"     value="{{item.lote}}" class="form-control form-control-sm" style="text-align: center; "></td>    
                                     <td style="width: 10%;">
                                       <div>                             
-                                          <button class=" btn btn-sm btn-outline-danger s" style="margin-right: 3px; color: black;"     ><i class="fa fa-trash" aria-hidden="true"></i> Remove </button> 
+                                          <button class=" btn btn-sm btn-outline-danger s" style="margin-right: 3px; color: black;"  (click)="removeItem(item.itemId)"    ><i class="fa fa-trash" aria-hidden="true"></i> Remove </button> 
                                       </div>
                                     </td>
                                     </ng-container>

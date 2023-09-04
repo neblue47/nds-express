@@ -49,6 +49,7 @@ import { RelatorioProdutoComponent } from './pages/relatorio-produto/relatorio-p
 import { InstituicaoComponent } from './pages/instituicao/instituicao.component';
 import { StocksComponent } from './pages/stocks/stocks.component';
 import { StocksEntradaComponent } from './pages/stocks-entrada/stocks-entrada.component';
+ 
 
 
 
@@ -105,7 +106,7 @@ registerLocaleData(localeEn, 'en-EN');
         ProfabricComponentsModule,
         ModalModule.forRoot(),
         PaginationModule.forRoot(), 
-        TabsModule.forRoot()
+        TabsModule.forRoot(), 
     ],
     providers: [httpInterceptorProviders],
     bootstrap: [AppComponent]

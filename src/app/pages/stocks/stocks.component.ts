@@ -1,5 +1,5 @@
 import { PageView } from '@/_models/PageView';
-import { ProductView } from '@/_models/ProductView';
+import { ItemEntradaView, ProductView } from '@/_models/ProductView';
 import { VendaItem, VendaView } from '@/_models/VendaView';
 import { ProdutoService } from '@/_services/produto.service';
 import { Component, TemplateRef } from '@angular/core';
@@ -13,31 +13,45 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 })
 export class StocksComponent {
   public modalRef?: BsModalRef;
-  public itemEntrada : any; 
+  public itemEntradaId : any; 
   public listProduct : ProductView[] = []; 
   public listSelected : ProductView[] = [];
-  public itemVenda   = {} as VendaView;
+  public itensEntrada : ItemEntradaView[] = [];
+   
   public appvmForm: any; 
  constructor(private modalService: BsModalService,private productService: ProdutoService,private fbuilder: FormBuilder) {
- 
+  this.inicializandoAll();
   
  }
  ngOnInit(): void {
   this.getAllProduct();
   
 }
-
+inicializandoAll(){
+     
+  let model  = {} as ItemEntradaView; 
+  //model.utilizadorId = this.appService.user.id;
+  this.criarForm(model);
+  this.itensEntrada = []  as  ItemEntradaView  [];
+  
+}
  modalAdd(template: TemplateRef<any>){
    
   this.modalRef = this.modalService.show(template, { class: 'modal-lg' });
  }
  novaEntrada(){
-  this.itemEntrada = {} as ProductView;
+  this.itemEntradaId = {}  as  ItemEntradaView;
+  this.itensEntrada = []  as  ItemEntradaView  [];
  }
  cancelNovaEntrada(){
-  this.itemEntrada = null;
+  this.itemEntradaId = null;
  }
-
+ criarForm(model: ItemEntradaView) {       
+  this.appvmForm = this.fbuilder.group({
+    itemEntradaId : model.productId,
+    itemEntradaArray:  this.fbuilder.array([])      
+  });    
+}
  getAllProduct(){
   this.productService.getAll().subscribe(
     (schlistagemVM : PageView<ProductView>) => 
@@ -48,39 +62,49 @@ export class StocksComponent {
     (erro: any) => {console.log(erro);}
   );
  }
-
- setItemCarProduct(modelId:any){
+ addItem(){
+  this.setItemEntrada(this.itemEntradaId);
+}
+setItemEntrada(modelId:any){
   this.productService.getOne(modelId).subscribe(
     (item : ProductView) => 
     {
-      let itemV = {} as VendaItem; 
-      itemV.descricaoItem = item.descricaoComercial;
-      itemV.preco = item.preco_taxado;
+      let itemV = {} as ItemEntradaView; 
+      itemV.productDescricao = item.descricaoComercial;
+      itemV.productId = item.id
+      itemV.valor = 0;
       itemV.quantidade = +1;
-      itemV.subtotal = item.preco_taxado;  
-      itemV.itemId = modelId;       
     
-      const found = this.itemVenda.vendaItens.find((obj) => {
+      const found = this.itensEntrada.find((obj) => {
         return obj.itemId === modelId;
       });   
 
       if (found === undefined) {
-        this.addItensVenda(itemV);
-        this.itemVenda.vendaItens.push(itemV); 
+        this.addItensEntrada(itemV);
+        this.itensEntrada.push(itemV);          
       }     
     },
     (erro: any) => {console.log(erro);}
     
   );
 }
-addItensVenda(model: VendaItem) {
-  const vendaItens = this.appvmForm.controls.vendaItens as FormArray;
-  vendaItens.push(this.fbuilder.group({
-    itemId: model.itemId,
-    quantidade: model.quantidade,
-    preco: model.preco,
-    subtotal: model.subtotal,
-    descricaoItem: model.descricaoItem,
+removeItem(itemId:any){
+  
+  const found = this.itensEntrada.find((obj) => {
+    return obj.itemId === itemId;
+  });
+  const indexOfObject = this.itensEntrada.findIndex((object) => {
+    return object.itemId === itemId;
+  });
+  if (indexOfObject !== -1) {
+    this.itensEntrada.splice(indexOfObject, 1);
+  }
+   
+}
+addItensEntrada(model: ItemEntradaView) {
+  const itemEntradaArray = this.appvmForm.controls.itemEntradaArray as FormArray;
+  itemEntradaArray.push(this.fbuilder.group({
+     
   }));
 }
 }

@@ -10,7 +10,19 @@ export interface ProductView{
     preco_taxado:number;
     total_venda:number;
 }
-
+export interface ItemEntradaView{
+    itemId:any;
+    productId: any;
+    productDescricao: any;
+    unidade:any;
+    unidadeDescription:any;
+    quantidade:number;
+    valor:number;
+    lote:any;
+    dataEntrada:any;
+    utilizadorId:any;
+    utilizadorName:any; 
+}
 export enum EStatuStock {
     DISPONIVEL = 1,
     INDISPONIVEL = 2,
