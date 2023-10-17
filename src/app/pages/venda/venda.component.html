@@ -32,7 +32,7 @@
                         </div>
                         <div class="form-group mb-2 col-sm-3"> 
                             <small id="numTelefone" class="form-text text-muted">Telefone.</small>       
-                            <input type="text"  formControlName="numTelefone" value="{{itemVenda.cliente.numTelefone}}" [(ngModel)]="itemVenda.cliente.numTelefone"  class="form-control"  required  autocomplete="false" >                         
+                            <input type="text"  formControlName="numTelefone" value="{{itemVenda.cliente.numTelefone}}" [(ngModel)]="itemVenda.cliente.numTelefone" (keydown.enter)="searchByFoneNumberEvent($event)"  class="form-control"  required  autocomplete="false" >                         
                         </div>
                         <div class="form-group mb-2 mt-4 col-sm-2"   >
                             <button type="button" class=" btn   btn-outline-primary mr-2" style="margin-right: 2px; padding: 5px 25px; color: black; " (click)="searchByFoneNumber()" title="Pesquisar o cliente"><i class="fa fa-search" aria-hidden="true"></i></button>
@@ -45,16 +45,18 @@
                     </div>
                     <div class="row mb-2">
                         <div class="col-sm-11 mt-3" style="text-transform: capitalize;">
-                            <select formControlName="itemSelected"    class="form-control btn-sm  "  [(ngModel)]="itemSelected" >
+                            <select formControlName="itemSelected"    class="form-control btn-sm  "  [(ngModel)]="itemSelected"  >
                                 <option  selected class="text-muted" ><i class="text-muted">seleciona um item para carrinho...</i></option>
-                                <option *ngFor="let txTypes of listProduct" [value]="txTypes.id">
-                                    {{txTypes.descricaoComercial}}
+                                <option *ngFor="let txTypes of listProduct" [value]="txTypes.inventarioId">
+                                    PRODUTO: {{txTypes.productDescricao}} - LOTE: {{txTypes.lote}}
+                                     
                                 </option> 
                             </select>
                         </div>
                         <div class="col-sm-1 mt-3 pull-right"   >
                             <button class=" btn   btn-outline-success ml-1 mr-2" (click)="addItem()" style="padding: 5px 28px; color: black; "   ><i class="fa fa-plus-circle" aria-hidden="true"></i> </button>
                         </div>
+                        
                     </div>
                     
                 <fieldset class="scheduler-border mt-5"> 
@@ -64,8 +66,9 @@
                             <tr>
                               <th scope="col" style="display: none;">#</th>
                               <th scope="col" style="width: 40%;">DESCRIÇÃO COMERCIAL</th>
-                              <th scope="col" style="width: 15%;">PREÇO </th>                       
-                              <th scope="col" style="width: 15%;">QUANTIDADE</th> 
+                              <th scope="col" style="width: 10%;">LOTE</th>
+                              <th scope="col" style="width: 10%;">PREÇO </th>                       
+                              <th scope="col" style="width: 10%;">QUANTIDADE</th> 
                               <th scope="col" style="width: 15%;">TOTAL</th>  
                               <th style="width: 10%; text-align:center;">  </th>
                           </tr>
@@ -74,8 +77,9 @@
                             <ng-container formArrayName="vendaItens">
                               <tr *ngFor="let item of itemVenda.vendaItens  let i = index"     >
                                 <ng-container [formGroupName]="i">
-                                  <td scope="row" style="display: none;"> </td>
-                                  <td style="width: 40%;">{{item.descricaoItem}}    <input type="hidden" formControlName="itemId" value="{{item.itemId}}"  class="form-control" >  </td>
+                                  <td scope="row" style="display: none;"> <input type="hidden" formControlName="itemId" value="{{item.itemId}}"  class="form-control" ></td>
+                                  <td style="width: 40%;">{{item.descricaoItem}}    <input type="hidden" formControlName="itemProductId" value="{{item.itemProductId}}"  class="form-control" >  </td>
+                                  <td style="width: 15%;">{{item.itemLote}} <input type="hidden" formControlName="itemLote" value="{{item.itemLote}}"  class="form-control" > </td> 
                                   <td style="width: 15%;">{{item.preco | currency}} <input type="hidden" formControlName="preco" value="{{item.preco}}"  class="form-control" > </td> 
                                   <td style="width: 15%;"><input  type="number" style="width: 80px; text-align: center; " formControlName="quantidade"   value="{{item.quantidade}}" [(ngModel)]="item.quantidade" (change)="onChangeEvent($event)"       ></td>  
                                   <td style="width: 15%; ">{{item.subtotal*item.quantidade | currency}} <input type="hidden" formControlName="subtotal" value="{{item.subtotal*item.quantidade}}"  [(ngModel)]="item.subtotal"  class="form-control" ></td>   

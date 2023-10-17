@@ -1,6 +1,7 @@
 import { PageView } from '@/_models/PageView';
-import { ProductView } from '@/_models/ProductView';
+import { ItemEntradaView, ProductView } from '@/_models/ProductView';
 import { ClienteView, VendaItem, VendaView } from '@/_models/VendaView';
+import { InventarioService } from '@/_services/inventario.service';
 import { ProdutoService } from '@/_services/produto.service';
 import { RelatorioService } from '@/_services/relatorio.service';
 import { VendaService } from '@/_services/venda.service';
@@ -16,9 +17,10 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./venda.component.scss']
 })
 export class VendaComponent {
-  public listProduct : ProductView[] = []; 
-  public listSelected : ProductView[] = [];
-  public itemSelected:any;
+  public listProduct : ItemEntradaView[] = []; 
+  public listSelected : ItemEntradaView[] = [];
+  public itemSelected :any;
+  public itemLoteSelected:any;
   public modalRef?: BsModalRef; 
   public nm_:number = 1;
   public itemVenda   = {} as VendaView;
@@ -31,13 +33,21 @@ export class VendaComponent {
   public _vendaResponse:any;
  
   public enumVendaType : Array<any> = [{value: 1,texto: "Pronto Pagamento",selected: true},{value: 2,texto: "Credito Pagamento",selected: false}];
-  constructor(private appService: AppService,private reportService: RelatorioService,private vendaService: VendaService,private productService: ProdutoService, private modalService: BsModalService,private fb: FormBuilder,private toastr: ToastrService) {
-    this.inicializandoAll(); 
-   }
-   ngOnInit(): void {
+  constructor(
+    private appService: AppService,
+    private reportService: RelatorioService,
+    private vendaService: VendaService,
+    private productService: ProdutoService,
+    private invetarioImpl: InventarioService, 
+    private modalService: BsModalService,
+    private fb: FormBuilder,private toastr: ToastrService
+    ) 
+    {    this.inicializandoAll();    }
+  
+    ngOnInit(): void {
     this.getAllProduct();
     
-  }
+   }
    inicializandoAll(){
      
     let model  = {} as VendaView;
@@ -51,27 +61,30 @@ export class VendaComponent {
     
   }
   getAllProduct(){
-    this.productService.getAll().subscribe(
-      (schlistagemVM : PageView<ProductView>) => 
+    this.invetarioImpl.getAllAvaiable().subscribe(
+      (schlistagemVM : PageView<ItemEntradaView>) => 
       {
         let listItem = schlistagemVM.content; 
-        this.listProduct = listItem.sort((a, b) => (a.descricaoComercial < b.descricaoComercial) ? -1 : 1);
+        this.listProduct = listItem.sort((a, b) => (a.productDescricao < b.productDescricao) ? -1 : 1);
       },
       (erro: any) => {console.log(erro);}
     );
   }
   
   setItemCarProduct(modelId:any){
-    this.productService.getOne(modelId).subscribe(
-      (item : ProductView) => 
+   
+    this.invetarioImpl.getOneProduct(modelId).subscribe(
+    
+      (item : ItemEntradaView) => 
       {
         let itemV = {} as VendaItem; 
-        itemV.descricaoItem = item.descricaoComercial;
-        itemV.preco = item.preco_taxado;
+        itemV.descricaoItem = item.productDescricao;
+        itemV.preco = item.valor;
         itemV.quantidade = +1;
-        itemV.subtotal = item.preco_taxado;  
-        itemV.itemId = modelId;       
-      
+        itemV.subtotal = item.valor;  
+        itemV.itemId = item.inventarioId;  
+        itemV.itemProductId = item.productId;     
+        itemV.itemLote = item.lote;
         const found = this.itemVenda.vendaItens.find((obj) => {
           return obj.itemId === modelId;
         });   
@@ -88,10 +101,14 @@ export class VendaComponent {
     );
   }
   onChangeEvent(event: any){
-    console.log(event.target.value);
+   // console.log(event.target.value);
     this.totalItems();
   }
-
+ onChangeGetItem(saleItem:any){
+  this.itemLoteSelected = saleItem.lote;
+  let localitem = saleItem.target.value as ItemEntradaView;
+  //console.log(localitem.productDescricao);
+ }
   onChangeValue(event:any){
     const pattern = /[0-9]/;
     const inputChar = String.fromCharCode(event.charCode);
@@ -117,7 +134,9 @@ export class VendaComponent {
     
   }
   addItem(){
-    this.setItemCarProduct(this.itemSelected);
+    //console.log(this.itemSelected)
+    if(this.itemSelected != null)
+      this.setItemCarProduct(this.itemSelected);
   }
   getClienteByTelefone(numTelefone:any){
     this.vendaService.getOneClienteByTelefone(numTelefone).subscribe(
@@ -135,6 +154,9 @@ export class VendaComponent {
       return;
     }
     this.getClienteByTelefone(numFone);
+  }
+  searchByFoneNumberEvent(event:any){
+    this.searchByFoneNumber();
   }
   clearClientData(){
     this.itemVenda.cliente = {} as ClienteView;
@@ -190,7 +212,9 @@ export class VendaComponent {
     vendaItens.push(this.fb.group({
       itemId: model.itemId,
       quantidade: model.quantidade,
+      itemProductId : model.itemProductId, 
       preco: model.preco,
+      itemLote: model.itemLote,
       subtotal: model.subtotal,
       descricaoItem: model.descricaoItem,
     }));

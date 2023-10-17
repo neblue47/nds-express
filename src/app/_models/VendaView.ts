@@ -52,7 +52,9 @@ export interface VendaItem{
     quantidade:any;
     subtotal:any;
     preco:any;
+    itemLote:any;
     itemId:any;
+    itemProductId:any;
 }
 export interface VendaFilter{
     dataInicial:any;

@@ -41,15 +41,15 @@
                         </tr>
                         </thead>
                         <tbody>
-                            <tr  >
-                                <td scope="row" style="display: none;">1</td>
-                                <td >Impressora HP DeskJet 2720</td>
-                                <td style="text-align: center;  ">UN</td> 
-                                <td style="text-align: center;  ">10</td>  
-                                <td style="text-align: center;  ">1500</td>   
-                                <td style="text-align: center;  ">LN2022</td>
-                                <td style="text-align: center;  ">15/08/2023</td>
-                                <td style="text-align: left;  ">Nelson diwidi</td>
+                          <tr  *ngFor="let item of tabelaEntrada"      >
+                            <td scope="row" style="display: none;">1</td>
+                                <td >{{item.productDescricao}}</td>
+                                <td style="text-align: center;  ">{{item.unidadeDescription}}</td> 
+                                <td style="text-align: center;  ">{{item.quantidade}}</td>  
+                                <td style="text-align: center;  ">{{item.valor | currency}}</td>   
+                                <td style="text-align: center;  ">{{item.lote}}</td>
+                                <td style="text-align: center;  ">{{item.dataEntradaString}}</td>
+                                <td style="text-align: left;    ">{{item.utilizadorName}}</td>
                                 <td style="text-align: right; width: 20%;">
                                     <div>                             
                                         <button class=" btn btn-sm btn-outline-secondary ml-3 mr-2" style=" color: black;"  ><i class="fa fa-edit" aria-hidden="true"></i> Editar</button>
@@ -57,7 +57,7 @@
               
                                     </div>
                                 </td>
-                            </tr>
+                          </tr>                             
                         </tbody>
                       </table> 
                 </div> 
@@ -84,7 +84,7 @@
                 <h3 class="card-title">EDITOR DE ENTRADA</h3>             
             </div>
             <div class="card-body">
-                <form  [formGroup]="appvmForm"  >     
+                <form  [formGroup]="appvmForm" >     
                     <div class="row mb-2">
                         <div class="col-sm-11 mt-3" style="text-transform: capitalize;">
                             <select  formControlName="itemEntradaId"    class="form-control btn-sm  " [(ngModel)]="itemEntradaId" class="form-control btn-sm   " style="width: 100%;" tabindex="-1"      >
@@ -115,13 +115,13 @@
                             <tbody>
                               <ng-container  formArrayName="itemEntradaArray" >
                                 <tr  *ngFor="let item of itensEntrada  let i = index"      >
-                                  <ng-container  >
-                                    <td scope="row" style="display: none;"><input type="hidden"  readonly  value="{{item.productId}}"  class="form-control form-control-sm"> </td>                                     
+                                  <ng-container [formGroupName]="i" >
+                                    <td scope="row" style="display: none;"><input type="hidden"  readonly  value="{{item.productId}}" formControlName="productId" class="form-control form-control-sm"> </td>                                     
                                     <td style="width: 40%;"><input type="text"  readonly  value="{{item.productDescricao}}"  class="form-control form-control-sm" >  </td>
-                                    <td style="width: 10%;"><select class="form-control form-control-sm" style="text-align: left; "> <option  disabled></option> <option selected>UNITÁRIO</option> <option>CAIXA</option> </select>  </td> 
-                                    <td style="width: 10%;"><input  type="number"   value="{{item.quantidade}}"     class="form-control form-control-sm" style="text-align: right; "></td>  
-                                    <td style="width: 10%;"><input  type="number"   value="{{item.valor}}"   class="form-control form-control-sm" style="text-align: right; "></td>  
-                                    <td style="width: 15%;"><input  type="text"     value="{{item.lote}}" class="form-control form-control-sm" style="text-align: center; "></td>    
+                                    <td style="width: 10%;"><select formControlName="unidade"  class="form-control form-control-sm" style="text-align: left; ">   <option *ngFor="let enumUnidade of enumUnidadeType" [value]="enumUnidade.value">{{enumUnidade.texto}}</option> </select>  </td> 
+                                    <td style="width: 10%;"><input  type="number" formControlName="quantidade"  value="{{item.quantidade}}"     class="form-control form-control-sm" style="text-align: right; "></td>  
+                                    <td style="width: 10%;"><input  type="number" formControlName="valor"   value="{{item.valor}}"   class="form-control form-control-sm" style="text-align: right; "></td>  
+                                    <td style="width: 15%;"><input  type="text"   formControlName="lote"  value="{{item.lote}}"   class="form-control form-control-sm" style="text-align: center; "></td>    
                                     <td style="width: 10%;">
                                       <div>                             
                                           <button class=" btn btn-sm btn-outline-danger s" style="margin-right: 3px; color: black;"  (click)="removeItem(item.itemId)"    ><i class="fa fa-trash" aria-hidden="true"></i> Remove </button> 
@@ -140,7 +140,7 @@
                   </fieldset>
                   
                     <div class="modal-footer"> 
-                     <button  class="btn btn-outline-primary btn-sm" style="margin-right: 5px;"  >Salvar</button> 
+                     <button  class="btn btn-outline-primary btn-sm" style="margin-right: 5px;" (click)="submitForm()"   [disabled]="itensEntrada.length == 0"   >Salvar</button> 
                      <button  class="btn btn-outline-secondary btn-sm" (click)="cancelNovaEntrada()">Fechar</button>
                    </div>
                   </form>

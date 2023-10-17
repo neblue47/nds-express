@@ -11,7 +11,7 @@ export interface ProductView{
     total_venda:number;
 }
 export interface ItemEntradaView{
-    itemId:any;
+    inventarioId:any;
     productId: any;
     productDescricao: any;
     unidade:any;
@@ -20,8 +20,13 @@ export interface ItemEntradaView{
     valor:number;
     lote:any;
     dataEntrada:any;
+    dataEntradaString: any;
     utilizadorId:any;
     utilizadorName:any; 
+}
+export interface ItemEntradaPack{
+    itemEntradaArray: any;
+    utilizadorId:any;
 }
 export enum EStatuStock {
     DISPONIVEL = 1,

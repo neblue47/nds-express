@@ -44,7 +44,7 @@ export class HeaderComponent implements OnInit {
         this.appinstservice.getInstDetail().subscribe(
             (returnDetail : InstituicaoView) => 
             {
-              console.log(returnDetail);
+             // console.log(returnDetail);
                
               this.instDetail  = returnDetail;  
             },
