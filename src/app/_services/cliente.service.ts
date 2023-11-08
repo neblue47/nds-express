@@ -14,6 +14,6 @@ export class ClienteService {
   constructor(private http: HttpClient) { }
 
   getContaClienteAll(): Observable<PageView<ContaClienteView>>{
-    return this.http.get<PageView<ContaClienteView>>(`${this.baseUrl}/clientes`);
+    return this.http.get<PageView<ContaClienteView>>(`${this.baseUrl}/clientes/listagem`);
   }
 }

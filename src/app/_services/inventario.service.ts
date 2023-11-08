@@ -23,15 +23,15 @@ export class InventarioService {
   }
 
   getAll(): Observable<PageView<ItemEntradaView>>{
-    return this.http.get<PageView<ItemEntradaView>>(`${this.baseUrl}/inventarios`);
+    return this.http.get<PageView<ItemEntradaView>>(`${this.baseUrl}/inventarios/listagem`);
   }
   getAllAvaiable(): Observable<PageView<ItemEntradaView>>{
-    return this.http.get<PageView<ItemEntradaView>>(`${this.baseUrl}/inventarios/produtosDisponiveis`);
+    return this.http.get<PageView<ItemEntradaView>>(`${this.baseUrl}/inventarios/disponiveis`);
   }
   getOne(id: any): Observable<ItemEntradaView>{
     return this.http.get<ItemEntradaView>(`${this.baseUrl}/inventarios/${id}`);
   }
   getOneProduct(itemId: any): Observable<ItemEntradaView>{
-    return this.http.get<ItemEntradaView>(`${this.baseUrl}/inventarios/produtoSelecionado/${itemId}`);
+    return this.http.get<ItemEntradaView>(`${this.baseUrl}/inventarios/selecionado/${itemId}`);
   }
 }

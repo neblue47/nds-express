@@ -21,7 +21,7 @@ export class InstituicaoService {
         return this.http.get<RetornoViews>(`${this.baseUrl}/configuracoes/details`);
     }
     getInstDetail(): Observable<InstituicaoView>{
-      return this.http.get<InstituicaoView>(`${this.baseUrl}/configuracoes/instDetails`);
+      return this.http.get<InstituicaoView>(`${this.baseUrl}/configuracoes/details`);
     }
     getRegimeAll(): Observable<PageView<RegimeView>>{
       return this.http.get<PageView<RegimeView>>(`${this.baseUrl}/configuracoes/regimeMotivos`);

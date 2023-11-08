@@ -23,7 +23,7 @@ public setRedirectUrl(url: string) {
 
 public auth(login: string, password: string): void {
   let model = {} as Login;
-  model.email = login;
+  model.username = login;
   model.password = password;
   this.postLogin(model).subscribe(
     (userResponse: any) => {
@@ -49,7 +49,7 @@ public auth(login: string, password: string): void {
 }
 public authAD(login: string, password: string,domain:string): void {
   let model = {} as Login;
-  model.email = login;
+  model.username = login;
   model.password = password;
    
   this.postLoginWithAD(model).subscribe(

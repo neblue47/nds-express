@@ -17,7 +17,7 @@ export class AppService {
     public instiDados: any = null;
     private authenticated = false;
   private redirectUrl: any;
-  baseUrl = `http://localhost:8080/login`;
+  baseUrl = `https://localhost:44329/v1`;
 
     constructor(private router: Router, private toastr: ToastrService,private http: HttpClient,private _auth :AuthService) {}
 
@@ -35,7 +35,7 @@ export class AppService {
 
     public auth({email, password}): void {
         let model = {} as Login;
-        model.email = email;
+        model.username = email;
         model.password = password;
         this.postLogin(model).subscribe(
         (userResponse: any) => {
@@ -62,7 +62,7 @@ export class AppService {
          
       }
       postLogin(appvmodel: Login){
-        return this.http.post(`${this.baseUrl}/autenticacao`,appvmodel)
+        return this.http.post(`${this.baseUrl}/autenticacao/login`,appvmodel)
       }
 
     async registerByAuth({email, password}) {

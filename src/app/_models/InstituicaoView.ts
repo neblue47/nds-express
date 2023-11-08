@@ -10,7 +10,13 @@ export interface InstituicaoView {
    
 }
 export interface RetornoViews{
-	instituicaoViews: InstituicaoView;
+	id: string; 
+	designacaoFormal: string; 
+	designacaoComercial: string;
+	numeroFiscal: string;
+	numeroTelefone: string; 
+	endereco: string;
+	missaoVisao: string;
 	dadosFiscaisViews: DadosFiscalView;
 }
 export interface RegimeView {

@@ -30,7 +30,7 @@ export class GestaoUtilizadorComponent {
   public domainname : any;
   public itemOpcaoId : any;
   singleSelect: any;
-  public usersTypes = [{value:1 , texto:'Admin'}, { value:2, texto:'Gestor'}, { value:3, texto:'Vendedor'}];
+  public usersTypes = [{value:0 , texto:'Admin'}, { value:1, texto:'Gestor'}, { value:2, texto:'Vendedor'}];
  
   constructor(private modalService: BsModalService,private fb: FormBuilder,private toastr: ToastrService,private userService: UtilizadorService) { }
 

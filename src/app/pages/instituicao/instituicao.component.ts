@@ -22,7 +22,7 @@ export class InstituicaoComponent {
   public fiscalDados :any; 
   public isEditavel:any;
   public isEditavelImp:any;
-  public moedaTypes = [{value:1 , texto:'Kwanza - Kz'}, { value:2, texto:'Dólar Americano - USD'}];
+  public moedaTypes = [{value:0 , texto:'Kwanza - Kz'}, { value:1, texto:'Dólar Americano - USD'}];
   public regimeTypes : any;
   public taxIvaTypes = [{value:0 , texto:'Isento'}, { value:7, texto:'Taxa IVA 7%'}, { value:10, texto:'Taxa IVA 10%'}, { value:14, texto:'Taxa IVA 14%'}];
   public tipoComercioList : Array<any> = [{value: 1,texto: "Produtos Gerais",selected: false},{value: 2,texto: "Farmaceuticos",selected: false},{value: 23,texto: "Serviços",selected: false}];
@@ -44,11 +44,11 @@ export class InstituicaoComponent {
       {
         console.log(returnDetail);
          
-        this.instiDados  = returnDetail.instituicaoViews;
+        this.instiDados  = returnDetail;
         this.fiscalDados = returnDetail.dadosFiscaisViews;
         this.isEditavel = true;
         this.isEditavelImp = true;
-        this.criarFormInst(returnDetail.instituicaoViews,this.isEditavel); 
+        this.criarFormInst(returnDetail,this.isEditavel); 
         this.criarFormImp(returnDetail.dadosFiscaisViews,this.isEditavelImp); 
       },
       (erro: any) => {console.log(erro);}

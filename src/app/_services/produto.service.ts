@@ -23,7 +23,7 @@ export class ProdutoService {
   }
 
   getAll(): Observable<PageView<ProductView>>{
-    return this.http.get<PageView<ProductView>>(`${this.baseUrl}/produtos`);
+    return this.http.get<PageView<ProductView>>(`${this.baseUrl}/produtos/listagem`);
   }
   getOne(id: any): Observable<ProductView>{
     return this.http.get<ProductView>(`${this.baseUrl}/produtos/${id}`);

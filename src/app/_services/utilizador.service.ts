@@ -20,7 +20,7 @@ deleteUserById(id: any) {
 }
 constructor(private http: HttpClient) { }
 getAll(): Observable<PageView<UserView>>{
-  return this.http.get<PageView<UserView>>(`${this.baseUrl}/utilizadores`);
+  return this.http.get<PageView<UserView>>(`${this.baseUrl}/utilizadores/listagem`);
 }
 getUserLogadoDetail(): Observable<UserView>{
   return this.http.get<UserView>(`${this.baseUrl}/utilizadores/utilizadorDetail`);

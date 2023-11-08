@@ -14,11 +14,11 @@ import { ClienteView, VendaView } from '../_models/VendaView';
   constructor(private http: HttpClient) { }
 
   getAll(): Observable<PageView<VendaView>>{
-    return this.http.get<PageView<VendaView>>(`${this.baseUrl}/vendas`);
+    return this.http.get<PageView<VendaView>>(`${this.baseUrl}/vendas/listagem`);
   }
   
   getOneClienteByTelefone(numTelefone: any): Observable<ClienteView>{
-    return this.http.get<ClienteView>(`${this.baseUrl}/vendas/clienteByTelefone/${numTelefone}`);
+    return this.http.get<ClienteView>(`${this.baseUrl}/clientes/clienteByTelefone/${numTelefone}`);
   }
   post(appvmodel: VendaView){
     return this.http.post(`${this.baseUrl}/vendas`,appvmodel)
